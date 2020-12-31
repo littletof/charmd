@@ -59,7 +59,8 @@ function transformNode(node: Node, parent: Node) {
             case 'paragraph':
                 switch (parent.kind) {
                     case 'blockquote':
-                        node.value = '┃ ' + colors.gray(colors.italic(node.value));
+                        // add color to each line, so when adding | per line, it doesnt mess the color up
+                        node.value = node.value.split('\n').map((l: string) => colors.gray(colors.italic(l))).join('\n');
                         break;
 
                     case 'listItem':

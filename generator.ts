@@ -19,7 +19,8 @@ export const generator = (node: Node): string | undefined => {
             );
 
         case 'blockquote':
-            return node.children?.map((child: Node) => generator(child)).join('\n');
+            // gen childs, then add horizontal line to the start of all generated chidren lines, except last \n
+            return node.children?.map((child: Node) => generator(child)?.split('\n').map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('\n');
 
         case 'list':
             let returnNode;
