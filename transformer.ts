@@ -6,7 +6,7 @@ import cardinal from 'cardinal';
 import { Node } from 'unist'; */
 
 import {colors} from './deps.ts';
-import { getHeaderFormatter, Node } from './utils.ts';
+import { getHeaderFormatter, isMarkdownTable, Node, transformTable } from './utils.ts';
 
 function recurse(node: Node, parent: Node) {
     transformNode(node, parent);
@@ -126,8 +126,8 @@ function transformNode(node: Node, parent: Node) {
     }
 
     if (node.type === 'text') {
-        /* if (isMarkdownTable(node.value as string)) {
-            node.value = prettifyTable(node.value as string);
+        /* if (isMarkdownTable(node.value)) {
+            node.value = transformTable(node.value);
         } */
     }
 }

@@ -8,7 +8,7 @@ import highlight from 'prism-cli'; */
 
 import * as mdast from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
 
-import {colors } from './deps.ts';
+import { colors } from './deps.ts';
 
 export type Node = {
     type: string;
@@ -66,13 +66,40 @@ export function getHeaderFormatter(head: number) {
     return headingFormats[head];
 }
 
-/* 
-
-export const isMarkdownTable = (text: string) => {
+export function isMarkdownTable(text: string) {
     // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts 125
     return /(\|[^\n]+\|\r?\n)((?:\|:?[-]+:?)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
+export function transformTable(markdownTable: string) {
+
+    let grid = markdownTable
+                .trim()
+                .replaceAll('\r', '')
+                .split('\n')
+                .map(l => l.split('|'));
+
+    console.log(grid);
+
+    const maxCol = Math.max(...grid.map(row => row.length));
+
+    for(let i = 0; i < maxCol; i++) {
+        const cellMax = Math.max(...grid.map(row => row[i]?.length || 0));        
+
+        // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
+        grid = grid.map(row => {
+            const d = row;
+            d[i] = (d[i]??'').padEnd(cellMax);
+            return d;
+        });
+    }
+
+    console.log(grid.map(row => "|" + row.join('|')).join('\n'));
+
+    return grid.map(row => "|" + row.join('|')).join('\n');
+}
+
+/*
 export const prettifyTable = (mdt: string): string => {
     let parsedTable: string = marktable(mdt);
 
