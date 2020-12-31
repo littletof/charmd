@@ -85,10 +85,9 @@ function transformNode(node: Node, parent: Node) {
             
             const title = ` codeblock [${node.lang}]`;
             const lines: string[] = node.value.split('\n');
-            const max = Math.max(...lines.map(l => l.length));
+            const max = Math.max(...lines.map(l => l.length), title.length);
 
-            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat(max-title.length + xPadding*2))) + '\n';
-            // codeBlock += `${node.value}`;
+            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';
 
 
             codeBlock += padString(max + 2*xPadding) + "\n";
@@ -101,7 +100,7 @@ function transformNode(node: Node, parent: Node) {
                 const code = colors.bgBrightBlack(colors.black(colors.italic(l)));
                 const paddingEnd = padString(max-l.length + xPadding);
 
-                codeBlock+= paddingStart + code + paddingEnd + '\n';
+                codeBlock+= paddingStart + code + paddingEnd + /* `(${code.length},${max})` + */ '\n';
             });
             codeBlock += padString(max + 2*xPadding) + "\n\n";
 

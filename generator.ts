@@ -58,7 +58,9 @@ export const generator = (node: Node): string | undefined => {
         case 'thematicBreak':
         case 'code':
         case 'text':
-            return node.value as string;
+            return node.value;
+        case 'html':
+            return node.value;
 
         default:
             return '';
