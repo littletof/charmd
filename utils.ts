@@ -8,6 +8,8 @@ import highlight from 'prism-cli'; */
 
 import * as mdast from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
 
+import {colors } from './deps.ts';
+
 export type Node = {
     type: string;
     value: any;
@@ -24,6 +26,24 @@ export type Node = {
 export const toAst = (markdown: string): Node => {
     return (mdast as any).default(markdown);
 };
+
+export function getHeaderFormatter(head: number) {
+    const headingFormats = [
+        (value: string) => value,
+        (value: string) => colors.bold(colors.underline(colors.red(value))),
+        (value: string) => colors.cyan(colors.bold(value)),
+        (value: string) => colors.yellow(colors.bold(value)),
+        (value: string) => colors.green(colors.bold(value)),
+        (value: string) => colors.blue(colors.bold(value)),
+        (value: string) => colors.magenta(colors.bold(value)),
+    ];
+
+    if(head > headingFormats.length-1) {
+        head = 0;
+    }
+
+    return headingFormats[head];
+}
 
 /* 
 

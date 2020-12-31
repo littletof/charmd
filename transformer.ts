@@ -6,7 +6,7 @@ import cardinal from 'cardinal';
 import { Node } from 'unist'; */
 
 import {colors} from './deps.ts';
-import type { Node } from './utils.ts';
+import { getHeaderFormatter, Node } from './utils.ts';
 
 function recurse(node: Node, parent: Node) {
     transformNode(node, parent);
@@ -28,19 +28,7 @@ function transformNode(node: Node, parent: Node) {
     if (node.type === 'text') {
         switch (parent.type) {
             case 'heading':
-                node.value += '\n';
-
-                const headingFormats = [
-                    (value: string) => value,
-                    (value: string) => colors.bold(colors.underline(colors.red(value))),
-                    (value: string) => colors.cyan(colors.bold(value)),
-                    (value: string) => colors.yellow(colors.bold(value)),
-                    (value: string) => colors.green(colors.bold(value)),
-                    (value: string) => colors.blue(colors.bold(value)),
-                    (value: string) => colors.magenta(colors.bold(value)),
-                ];
-
-                node.value = headingFormats[parent.depth || 0](`${'#'.repeat(parent.depth || 1)} ${node.value}`);
+                node.value = getHeaderFormatter(parent.depth || 0)(node.value);
                 break;
 
             case 'link':

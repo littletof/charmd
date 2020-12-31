@@ -1,5 +1,5 @@
 import {colors} from './deps.ts';
-import type { Node } from './utils.ts';
+import { getHeaderFormatter, Node } from './utils.ts';
 
 export const generator = (node: Node): string | undefined => {
     switch (node.type) {
@@ -9,8 +9,10 @@ export const generator = (node: Node): string | undefined => {
         case 'link':
         case 'strong':
         case 'emphasis':
-        case 'heading':
             return node.children?.map((child: Node) => generator(child)).join(' ');
+        case 'heading':
+            const wholeHead = node.children?.map((child: Node) => generator(child)).join('');
+            return `${getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth || 1)+" ")}${wholeHead}` + '\n';
 
         case 'paragraph':
             return (
