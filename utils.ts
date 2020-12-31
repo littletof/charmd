@@ -23,7 +23,21 @@ export type Node = {
     lang?: string;
 };
 
+function polyfillDocumentCreateForMDAST() {
+    // https://github.com/wooorm/parse-entities/blob/main/decode-entity.browser.js#L15
+    // happens eg when text contains: [ &mdash; ]
+    (globalThis as any).document = {
+        createElement: (...data: any[]) => {
+            return new class {
+                set innerHTML(data: string) {this.textContent = data};
+                textContent = '';
+            }();
+        }
+    };
+}
+
 export const toAst = (markdown: string): Node => {
+    polyfillDocumentCreateForMDAST();
     return (mdast as any).default(markdown);
 };
 
