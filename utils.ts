@@ -26,6 +26,7 @@ export type Node = {
 function polyfillDocumentCreateForMDAST() {
     // https://github.com/wooorm/parse-entities/blob/main/decode-entity.browser.js#L15
     // happens eg when text contains: [ &mdash; ]
+    const prev = (globalThis as any).document;
     (globalThis as any).document = {
         createElement: (...data: any[]) => {
             return new class {
@@ -34,11 +35,17 @@ function polyfillDocumentCreateForMDAST() {
             }();
         }
     };
+    return prev;
 }
 
 export const toAst = (markdown: string): Node => {
-    polyfillDocumentCreateForMDAST();
-    return (mdast as any).default(markdown);
+    const prevDocument = polyfillDocumentCreateForMDAST();
+    const value = (mdast as any).default(markdown);
+    
+    // just to be saver
+    (globalThis as any).document = prevDocument;
+
+    return value;
 };
 
 export function getHeaderFormatter(head: number) {
