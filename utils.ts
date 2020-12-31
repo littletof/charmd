@@ -6,18 +6,26 @@ import Table from 'cli-table';
 import Axios from 'axios';
 import highlight from 'prism-cli'; */
 
-import * as d from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
+import * as mdast from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
 
-export const toAst = (markdown: string) => {
-    return d.default(markdown);
-    
-    // return unified().use(parser).parse(markdown);
+export type Node = {
+    type: string;
+    value: any;
+    children?: Node[];
+    kind?: string;
+    ordered?: boolean;
+    tabed?: boolean;
+    depth?: number;
+    url?: string;
+    alt?: string;
+    lang?: string;
+};
+
+export const toAst = (markdown: string): Node => {
+    return (mdast as any).default(markdown);
 };
 
 /* 
-export const toMarkdown = (node: any) => {
-    return unified().use(stringify).stringify(node);
-};
 
 export const isMarkdownTable = (text: string) => {
     // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts 125
@@ -64,22 +72,6 @@ export const prettifyTable = (mdt: string): string => {
     });
 
     return table.toString();
-};
-
-export const getMarkdownFromUrl = async (url: string): Promise<any> => {
-    const requestData = await Axios.get(url);
-    return requestData.data;
-};
-
-export const npmPackageUrl = (packageName: string): string => {
-    const NPM_REGISTRY = 'https://registry.npmjs.com/';
-
-    return NPM_REGISTRY + packageName;
-};
-
-export const githubReadmeUrl = (repoName: string): string => {
-    const GITHUB_URL = `https://api.github.com/repos/${repoName}/readme`;
-    return GITHUB_URL;
 };
 
 export const highlightWithPrism = (code: string, language: string): string => {

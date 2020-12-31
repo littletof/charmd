@@ -1,48 +1,42 @@
 import {colors} from './deps.ts';
+import type { Node } from './utils.ts';
 
-export const generator = (node: Node): string => {
+export const generator = (node: Node): string | undefined => {
     switch (node.type) {
         case 'root':
-            return (node.children as any)
-                .map((child: Node) => generator(child))
-                .join('\n');
+            return node.children?.map((child: Node) => generator(child)).join('\n');
 
         case 'link':
         case 'strong':
         case 'emphasis':
         case 'heading':
-            return (node.children as any)
-                .map((child: Node) => generator(child))
-                .join(' ');
+            return node.children?.map((child: Node) => generator(child)).join(' ');
 
         case 'paragraph':
             return (
-                (node.children as any).map((child: Node) => generator(child)).join('') +
+                node.children?.map((child: Node) => generator(child)).join('') +
                 '\n'
             );
 
         case 'blockquote':
-            return (node.children as any)
-                .map((child: Node) => generator(child))
-                .join('\n');
+            return node.children?.map((child: Node) => generator(child)).join('\n');
 
         case 'list':
             let returnNode;
             if (node.ordered) {
-                returnNode = (node.children as any).map((child: Node, index: number) => {
+                returnNode = node.children?.map((child: Node, index: number) => {
                     let numberIndicator = colors.bold(colors.gray(index + 1 + '.'));
                     return `${numberIndicator} ` + generator(child);
                 });
             } else {
-                returnNode = (node.children as any).map(
+                returnNode = node.children?.map(
                     (child: Node) => `${colors.bold(colors.gray('-'))} ` + generator(child)
                 );
             }
-            return returnNode.join('');
+            return returnNode!.join('');
 
         case 'listItem':
-            return (node.children as any)
-                .map((child: Node) => {
+            return node.children?.map((child: Node) => {
                     if (child.type === 'list') {
                         child.tabed = true;
                         return '    ' + generator(child);

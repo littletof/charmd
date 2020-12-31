@@ -10,5 +10,5 @@ export const renderMarkdown = (filename: string) => {
 export const renderString = (md: string): string => {
     const mdast = toAst(md);
     transformer(mdast);
-    return generator(mdast);
+    return generator(mdast) ?? "";
 };
