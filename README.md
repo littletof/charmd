@@ -59,6 +59,7 @@ Feedback and contributions are always welcome. Open an issue or a PR, or contact
 ## TODO
 
 - [ ] fix lists
+- [ ] remove dots from codeblock backgrounds
 - [ ] strikethrough and underline and combinations
 - [ ] links with images
 - [ ] ```# Header with *italic*```
