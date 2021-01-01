@@ -58,7 +58,8 @@ Feedback and contributions are always welcome. Open an issue or a PR, or contact
 
 ## TODO
 
-- fix lists
-- strikethrough and underline and combinations
-- links with images
-- ```# Header with *italic*```
+- [ ] fix lists
+- [ ] strikethrough and underline and combinations
+- [ ] links with images
+- [ ] ```# Header with *italic*```
+- [ ] Look into alternatives for the AST generation.
