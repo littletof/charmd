@@ -72,7 +72,7 @@ export function getHeaderFormatter(head: number) {
 }
 
 export function isMarkdownTable(text: string) {
-    // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts 125
+    // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts#L125
     return /(\|[^\n]+\|\r?\n)((?:\|:?[-]+:?)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 

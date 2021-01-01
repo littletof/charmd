@@ -1,3 +1,5 @@
+// Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/generator.ts
+
 import {colors} from './deps.ts';
 import { getHeaderFormatter, Node } from './utils.ts';
 

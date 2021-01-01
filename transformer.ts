@@ -1,9 +1,4 @@
-/* import chalk from 'chalk';
-import terminalLink from 'terminal-link';
-import traverser from 'unist-util-visit';
-import { highlightWithPrism, isMarkdownTable, prettifyTable } from './utils.ts';
-import cardinal from 'cardinal';
-import { Node } from 'unist'; */
+// Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/transformer.ts
 
 import {colors} from './deps.ts';
 import { getHeaderFormatter, isMarkdownTable, Node, transformTable } from './utils.ts';
@@ -86,8 +81,13 @@ function transformNode(node: Node, parent: Node) {
             break;
 
         case 'thematicBreak':
-            const terminalWidth = Deno.consoleSize(Deno.stdout.rid).columns;
-            const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 75))
+            let terminalWidth;
+            try {
+                terminalWidth = (Deno as any/* so --unstable is not needed */).consoleSize(Deno.stdout.rid).columns;
+            } catch {
+                terminalWidth = 160;
+            }
+            const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 80))
 
             node.value = colors.reset('_'.repeat(width) + '\n');
             break;
