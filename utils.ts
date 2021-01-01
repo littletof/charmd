@@ -6,9 +6,7 @@ import Table from 'cli-table';
 import Axios from 'axios';
 import highlight from 'prism-cli'; */
 
-import * as mdast from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
-
-import { colors } from './deps.ts';
+import { colors, fromMarkdown } from './deps.ts';
 
 export type Node = {
     type: string;
@@ -21,6 +19,8 @@ export type Node = {
     url?: string;
     alt?: string;
     lang?: string;
+    label?: string;
+    title?: string;
 };
 
 function polyfillDocumentCreateForMDAST() {
@@ -38,11 +38,16 @@ function polyfillDocumentCreateForMDAST() {
     return prev;
 }
 
-export const toAst = (markdown: string): Node => {
+/**
+ * Returns an AST of the provided markdown.
+ * It is a basic wrapper around https://github.com/syntax-tree/mdast-util-from-markdown,
+ * `encoding` and `options` are passed straight to its `fromMarkdown` function
+ */
+export function toAst(markdown: string, encodig?: any, options?: {extensions?: any[], mdastExtensions?: any[]}): Node {
     const prevDocument = polyfillDocumentCreateForMDAST();
-    const value = (mdast as any).default(markdown);
+    const value = fromMarkdown(markdown, encodig, options);
     
-    // just to be saver
+    // just to be safer
     (globalThis as any).document = prevDocument;
 
     return value;
@@ -52,11 +57,11 @@ export function getHeaderFormatter(head: number) {
     const headingFormats = [
         (value: string) => value,
         (value: string) => colors.bold(colors.underline(colors.red(value))),
-        (value: string) => colors.cyan(colors.bold(value)),
         (value: string) => colors.yellow(colors.bold(value)),
         (value: string) => colors.green(colors.bold(value)),
-        (value: string) => colors.blue(colors.bold(value)),
         (value: string) => colors.magenta(colors.bold(value)),
+        (value: string) => colors.blue(colors.bold(value)),
+        (value: string) => colors.cyan(colors.bold(value)),
     ];
 
     if(head > headingFormats.length-1) {
@@ -79,7 +84,7 @@ export function transformTable(markdownTable: string) {
                 .split('\n')
                 .map(l => l.split('|'));
 
-    console.log(grid);
+    // console.log(grid);
 
     const maxCol = Math.max(...grid.map(row => row.length));
 
@@ -94,7 +99,7 @@ export function transformTable(markdownTable: string) {
         });
     }
 
-    console.log(grid.map(row => "|" + row.join('|')).join('\n'));
+    // console.log(grid.map(row => "|" + row.join('|')).join('\n'));
 
     return grid.map(row => "|" + row.join('|')).join('\n');
 }

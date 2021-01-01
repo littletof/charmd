@@ -14,6 +14,12 @@ function recurse(node: Node, parent: Node) {
 }
 
 function transformNode(node: Node, parent: Node) {
+    if (node.type === 'text') {
+        /* if (isMarkdownTable(node.value)) {
+            node.value = transformTable(node.value);
+        } */
+    }
+
     if (node.type === 'paragraph') {
         switch (parent?.type) {
             case 'blockquote':
@@ -60,8 +66,18 @@ function transformNode(node: Node, parent: Node) {
 
     switch (node.type) {
         case 'image':
-            const link = `[${node.alt}](${node.url})`;// TODO terminalLink(node.alt as string, node.url as string);
+            const link = `![${node.alt}](${node.url})`;// TODO terminalLink(node.alt as string, node.url as string);
             node.value = colors.gray(colors.italic(`Image: ${link}`));
+            break;
+        case 'imageReference':
+            const ref = `![${node.alt}]${colors.cyan(`[${node.label}]`)}`;
+            node.value = colors.gray(colors.italic(`Image reference: ${ref}`));
+            node.type = 'text';
+            break;
+        case 'definition':
+            const def = `${colors.cyan(`[${node.label}]`)}: [${node.title ?? ''}](${node.url})`;
+            node.value = colors.gray(colors.italic(`${def}\n`));
+            node.type = 'text';
             break;
 
         case 'inlineCode':
@@ -70,8 +86,6 @@ function transformNode(node: Node, parent: Node) {
             break;
 
         case 'thematicBreak':
-            Deno.consoleSize(Deno.stdout.rid).columns;
-
             const terminalWidth = Deno.consoleSize(Deno.stdout.rid).columns;
             const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 75))
 
@@ -79,11 +93,11 @@ function transformNode(node: Node, parent: Node) {
             break;
 
         case 'code':
-            let codeBlock = '\n';
+            let codeBlock = '';
             const xPadding = 2;
             const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
             
-            const title = ` codeblock [${node.lang}]`;
+            const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
             const lines: string[] = node.value.replaceAll('\r', '').split('\n');
             const max = Math.max(...lines.map(l => l.length), title.length);
 
@@ -102,9 +116,8 @@ function transformNode(node: Node, parent: Node) {
 
                 codeBlock+= paddingStart + code + paddingEnd + /* `(${l.length},${max})` + */ '\n';
             });
-            codeBlock += padString(max + 2*xPadding) + "\n\n";
+            codeBlock += padString(max + 2*xPadding) + "\n";
 
-            // node.value = colors.bgBrightBlack(colors.black(colors.italic(`${codeBlock}`))) +'\n';
             node.value = codeBlock;
 
             /* const codeLang = node.lang ? chalk.gray('// ' + node.lang + '\n') : '';
@@ -123,12 +136,6 @@ function transformNode(node: Node, parent: Node) {
             }
             node.value = codeLang + node.value; */
             break;
-    }
-
-    if (node.type === 'text') {
-        /* if (isMarkdownTable(node.value)) {
-            node.value = transformTable(node.value);
-        } */
     }
 }
 

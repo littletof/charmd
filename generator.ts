@@ -14,6 +14,13 @@ export const generator = (node: Node): string | undefined => {
             const wholeHead = node.children?.map((child: Node) => generator(child)).join('');
             return `${getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth || 1)+" ")}${wholeHead}` + '\n';
 
+        case 'linkReference':
+            return (
+                colors.cyan(colors.italic( 
+                    '[' + (node.children?.map((child: Node) => generator(child)).join('') ??  "") + ']'
+                ))
+            );
+
         case 'paragraph':
             return (
                 node.children?.map((child: Node) => generator(child)).join('') +
@@ -22,7 +29,7 @@ export const generator = (node: Node): string | undefined => {
 
         case 'blockquote':
             // gen childs, then add horizontal line to the start of all generated chidren lines, except last \n
-            return node.children?.map((child: Node) => generator(child)?.split('\n').map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('\n');
+            return node.children?.map((child: Node) => generator(child)?.split('\n').map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
 
         case 'list':
             let returnNode;
@@ -63,6 +70,7 @@ export const generator = (node: Node): string | undefined => {
             return node.value;
 
         default:
-            return '';
+            // console.log({...node});
+            return node.value;
     }
 };
