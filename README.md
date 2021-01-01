@@ -1,5 +1,8 @@
 # Deno terminal markdown
 
+> 🚧 This module is in early developement, expect breaking changes 🚧
+> Also not yet released in any repository. Until than, you can use it with the raw urls
+
 Enables you, to render a markdown text into a string, which printed in the terminal provides a formatted output, instead of plain text.
 
 ![Showcase](docs/showcase.png)
@@ -13,19 +16,19 @@ This module draws heavily from @dephraims work with <https://github.com/dephraii
 To see a general capabilities of this module run:
 
 ```bash
-deno run ./example.ts
+deno run https://raw.githubusercontent.com/littletof/terminal_markdown/master/example.ts
 ```
 
 To see, how a specific markdown gets rendered run:
 
 ```bash
-deno run --allow-read ./example.ts ./README.md
+deno run --allow-read https://raw.githubusercontent.com/littletof/terminal_markdown/master/example.ts ./README.md
 ```
 
 ## Usage
 
 ```ts
-import { renderMarkdown } from './mod.ts';
+import { renderMarkdown } from 'https://raw.githubusercontent.com/littletof/terminal_markdown/master/mod.ts';
 
 const md = Deno.readTextFileSync(Deno.args[0]);
 console.log(renderMarkdown(md));
