@@ -39,6 +39,22 @@ The main functions are also exported from the module, so you can use the `toAST`
 
 Also, since its a wrapper for [mdast-util-from-markdown](https://github.com/syntax-tree/mdast-util-from-markdown), you can pass `extensions` to it in the options, which should work too.
 
+### Direct use
+
+For direct use in the terminal run `cli.ts`:
+
+```bash
+deno run --allow-net https://raw.githubusercontent.com/littletof/terminal_markdown/master/cli.ts -r https://raw.githubusercontent.com/denoland/deno/master/README.md
+```
+
+Or install it with `deno install`
+
+It has three options:
+
+- `-s` for rendering a string directly: `-s "# markdown string"`
+- `-l` for rendering a local file: `-l ./README.md`
+- `-r` for rendering a remote file: `-r https://raw.githubusercontent.com/denoland/deno/master/README.md`
+
 ## Permissions
 
 The module itself requires no permissions to run.
