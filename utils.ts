@@ -73,7 +73,7 @@ export function getHeaderFormatter(head: number) {
 
 export function isMarkdownTable(text: string) {
     // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts#L125
-    return /(\|[^\n]+\|\r?\n)((?:\|:?[-]+:?)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
+    return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
 export function transformTable(markdownTable: string) {
@@ -82,7 +82,7 @@ export function transformTable(markdownTable: string) {
                 .trim()
                 .replaceAll('\r', '')
                 .split('\n')
-                .map(l => l.split('|'));
+                .map(l => {return l.trim().replaceAll(/^\||\|$/g, '').split('|')});
 
     // console.log(grid);
 
@@ -101,7 +101,7 @@ export function transformTable(markdownTable: string) {
 
     // console.log(grid.map(row => "|" + row.join('|')).join('\n'));
 
-    return grid.map(row => "|" + row.join('|')).join('\n');
+    return grid.map(row => "|" + row.join('|') + "|").join('\n');
 }
 
 /*

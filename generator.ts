@@ -1,7 +1,7 @@
 // Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/generator.ts
 
 import {colors} from './deps.ts';
-import { getHeaderFormatter, Node } from './utils.ts';
+import { getHeaderFormatter, Node, transformTable } from './utils.ts';
 
 export const generator = (node: Node): string | undefined => {
     switch (node.type) {
@@ -30,8 +30,11 @@ export const generator = (node: Node): string | undefined => {
             );
 
         case 'blockquote':
-            // gen childs, then add horizontal line to the start of all generated chidren lines, except last \n
-            return node.children?.map((child: Node) => generator(child)?.split('\n').map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
+            // gen childs
+            return node.children?.map((child: Node) => generator(child)?.split('\n')
+                    .map((l: string) => colors.gray(colors.italic(l)))
+                    // then add horizontal line to the start of all generated chidren lines, except last \n
+                    .map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
 
         case 'list':
             let returnNode;
@@ -70,6 +73,10 @@ export const generator = (node: Node): string | undefined => {
             return node.value;
         case 'html':
             return node.value;
+
+        case 'table':
+            const t = node.children?.map((child: Node) => generator(child)).join('') || '';
+            return transformTable(t) + '\n';
 
         default:
             // console.log({...node});
