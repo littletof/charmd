@@ -143,7 +143,7 @@ ___
 > | data   | path to data files to supply the </br> data that will be passed into templates. |
 > | engine | engine to be used for processing templates. Handlebars is the default. |
 > | ext    | extension to be used for dest files. |
-> | image    | ![image](https://deno.land/logo.svg) |
+> | image  | ![image](https://deno.land/logo.svg) |
 
 
 | Option | Description |
@@ -151,7 +151,7 @@ ___
 | data   | path to data files to supply the data that will be passed into templates. |
 | engine | engine to be used for processing templates. Handlebars is the default. |
 | ext    | extension to be used for dest files. |
-
+| image  | ![image](https://deno.land/logo.svg) |
 
 ## Links
 
