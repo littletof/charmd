@@ -133,7 +133,7 @@ ___
 
 > 🔺 Currently tables are presented without formatting.
 
-|   a   |   b   |   c   |
+|   a   |  _b_  | **c** |
 | ----- | :---: | ----: |
 |  123  |  456  |  789  |
 |  ABC  |  DEF  |  GHI  |
@@ -143,6 +143,7 @@ ___
 > | data   | path to data files to supply the </br> data that will be passed into templates. |
 > | engine | engine to be used for processing templates. Handlebars is the default. |
 > | ext    | extension to be used for dest files. |
+> | image    | ![image](https://deno.land/logo.svg) |
 
 
 | Option | Description |

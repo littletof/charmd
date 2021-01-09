@@ -89,12 +89,14 @@ export function transformTable(markdownTable: string) {
     const maxCol = Math.max(...grid.map(row => row.length));
 
     for(let i = 0; i < maxCol; i++) {
-        const cellMax = Math.max(...grid.map(row => row[i]?.length || 0));        
+        const cellMax = Math.max(...grid.map(row => colors.stripColor(row[i] || "").length));        
 
         // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
         grid = grid.map(row => {
             const d = row;
-            d[i] = (d[i]??'').padEnd(cellMax);
+            // add stipped length to padding
+            const diff = d[i].length - colors.stripColor(d[i]).length;
+            d[i] = (d[i]??'').padEnd(cellMax+diff);
             return d;
         });
     }
