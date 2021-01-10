@@ -89,14 +89,26 @@ export function transformTable(markdownTable: string) {
     const maxCol = Math.max(...grid.map(row => row.length));
 
     for(let i = 0; i < maxCol; i++) {
-        const cellMax = Math.max(...grid.map(row => colors.stripColor(row[i] || "").length));        
+        // if second row/alingment row, ignore it's length
+        const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "")).trim().length));        
 
+        const align = grid[1][i];
+        const cellAlign = align.startsWith(':') ? (align.endsWith(':') ? 'center' : 'left') : (align.endsWith(':') ? 'right' : 'left');
         // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
-        grid = grid.map(row => {
+        const cellPadding = 1;
+        const paddingString = " ".repeat(cellPadding);
+        grid = grid.map((row, ri) => {
             const d = row;
+            if(ri === 1) {
+                d[i] = `${['center', 'left'].includes(cellAlign) ? ':' : ''}${"-".repeat(cellMax + cellPadding*2 - (cellAlign === 'center'? 2 : 1))}${['center', 'right'].includes(cellAlign) ? ':' : ''}`;
+                return d;
+            }
+
+            const cellContent = (d[i] || '').trim();
             // add stipped length to padding
-            const diff = d[i].length - colors.stripColor(d[i]).length;
-            d[i] = (d[i]??'').padEnd(cellMax+diff);
+            const strippedDiff = cellContent.length - colors.stripColor(cellContent).length;
+            const diff = (cellMax - cellContent.length) + strippedDiff;
+            d[i] = paddingString + getAlignedCellText(cellContent, cellAlign, diff) + paddingString;
             return d;
         });
     }
@@ -104,6 +116,17 @@ export function transformTable(markdownTable: string) {
     // console.log(grid.map(row => "|" + row.join('|')).join('\n'));
 
     return grid.map(row => "|" + row.join('|') + "|").join('\n');
+}
+
+function getAlignedCellText(cellText: string, align: string, diff: number) {
+    switch(align) {
+        case 'center':
+            return " ".repeat(Math.floor(diff/2)) + cellText + " ".repeat(Math.ceil(diff/2));
+        case 'left':
+            return cellText + " ".repeat(diff);
+        case 'right':
+            return " ".repeat(diff) + cellText;
+    }
 }
 
 /*
