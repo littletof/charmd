@@ -131,12 +131,15 @@ ___
 
 ## Tables
 
-> 🔺 Currently tables are presented without formatting.
-
-|   a   |  _b_  | **c** |
+|   a   |   b   |   c   |
 | ----- | :---: | ----: |
 |  123  |  456  |  789  |
 |  ABC  |  DEF  |  GHI  |
+
+| left1 |left2|   center   |  right  |
+|-------|:----|:-----:|----:|
+|  123  | 456 |  789  | 101 |
+|  \`ABC\`  | **DEF** |  *GHI*  | JKL |
 
 > | Option | Description |
 > | ------ | ----------- |
