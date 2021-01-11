@@ -103,7 +103,7 @@ function transformNode(node: Node, parent: Node) {
             const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
             
             const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
-            const lines: string[] = node.value.replaceAll('\r', '').split('\n');
+            const lines: string[] = node.value.replaceAll('\r', '').replaceAll('\t', '    ').split('\n');
             const max = Math.max(...lines.map(l => l.length), title.length);
 
             codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';

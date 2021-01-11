@@ -73,6 +73,7 @@ export function getHeaderFormatter(head: number) {
 
 export function isMarkdownTable(text: string) {
     // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts#L125
+    // Added \s* for the alignment row
     return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
@@ -82,6 +83,7 @@ export function transformTable(markdownTable: string) {
                 .trim()
                 .replaceAll('\r', '')
                 .split('\n')
+                // remove first and last "|" borders of the table
                 .map(l => {return l.trim().replaceAll(/^\||\|$/g, '').split('|')});
 
     // console.log(grid);
@@ -90,7 +92,7 @@ export function transformTable(markdownTable: string) {
 
     for(let i = 0; i < maxCol; i++) {
         // if second row/alingment row, ignore it's length
-        const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "")).trim().length));        
+        const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "").trim()).length));        
 
         const align = grid[1][i];
         const cellAlign = align.startsWith(':') ? (align.endsWith(':') ? 'center' : 'left') : (align.endsWith(':') ? 'right' : 'left');
@@ -119,6 +121,7 @@ export function transformTable(markdownTable: string) {
 }
 
 function getAlignedCellText(cellText: string, align: string, diff: number) {
+    diff = Math.max(diff, 0); // TODO fix, so no negative comes in in the first place
     switch(align) {
         case 'center':
             return " ".repeat(Math.floor(diff/2)) + cellText + " ".repeat(Math.ceil(diff/2));
