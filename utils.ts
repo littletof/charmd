@@ -83,10 +83,13 @@ export function transformTable(markdownTable: string) {
                 .trim()
                 .replaceAll('\r', '')
                 .split('\n')
-                // remove first and last "|" borders of the table
-                .map(l => {return l.trim().replaceAll(/^\||\|$/g, '').split('|')});
-
-    // console.log(grid);
+                .map(l => { return (
+                    l
+                    .trim()
+                    // remove first and last "|" borders of the table
+                    .replaceAll(/^\||\|$/g, '')
+                    .split('|')
+                )});
 
     const maxCol = Math.max(...grid.map(row => row.length));
 
@@ -94,7 +97,7 @@ export function transformTable(markdownTable: string) {
         // if second row/alingment row, ignore it's length
         const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "").trim()).length));        
 
-        const align = grid[1][i];
+        const align = grid[1][i] || ':--'; // defaults to left, to give chance to render markdown, not to throw
         const cellAlign = align.startsWith(':') ? (align.endsWith(':') ? 'center' : 'left') : (align.endsWith(':') ? 'right' : 'left');
         // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
         const cellPadding = 1;
