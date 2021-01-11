@@ -77,7 +77,7 @@ export function isMarkdownTable(text: string) {
     return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
-export function transformTable(markdownTable: string) {
+export function transformTable(markdownTable: string, borders?: boolean) {
 
     let grid = markdownTable
                 .trim()
@@ -92,24 +92,30 @@ export function transformTable(markdownTable: string) {
                 )});
 
     const maxCol = Math.max(...grid.map(row => row.length));
+    const cellWidths = [];
+    
+    const cellPadding = 1;
+    const paddingString = " ".repeat(cellPadding);
 
     for(let i = 0; i < maxCol; i++) {
         // if second row/alingment row, ignore it's length
         const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "").trim()).length));        
+        cellWidths.push(cellMax);
 
         const align = grid[1][i] || ':--'; // defaults to left, to give chance to render markdown, not to throw
         const cellAlign = align.startsWith(':') ? (align.endsWith(':') ? 'center' : 'left') : (align.endsWith(':') ? 'right' : 'left');
         // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
-        const cellPadding = 1;
-        const paddingString = " ".repeat(cellPadding);
         grid = grid.map((row, ri) => {
             const d = row;
-            if(ri === 1) {
+            if(ri === 1) { // to fill rowalignment-lint to cellMax
                 d[i] = `${['center', 'left'].includes(cellAlign) ? ':' : ''}${"-".repeat(cellMax + cellPadding*2 - (cellAlign === 'center'? 2 : 1))}${['center', 'right'].includes(cellAlign) ? ':' : ''}`;
                 return d;
             }
 
-            const cellContent = (d[i] || '').trim();
+            let cellContent = (d[i] || '').trim();
+            if(borders && ri === 0) {
+                cellContent = colors.blue(colors.bold(cellContent));
+            }
             // add stipped length to padding
             const strippedDiff = cellContent.length - colors.stripColor(cellContent).length;
             const diff = (cellMax - cellContent.length) + strippedDiff;
@@ -118,9 +124,22 @@ export function transformTable(markdownTable: string) {
         });
     }
 
-    // console.log(grid.map(row => "|" + row.join('|')).join('\n'));
+    if(borders) {
+        // console.log(grid.map(row => "|" + row.join('|')).join('\n'));
+        const top = tableChars.topLeft + cellWidths.map(cw => tableChars.middleMiddle.repeat(cw + cellPadding*2)).join(tableChars.topMiddle) + tableChars.topRight;
+        const middle = tableChars.leftMiddle + cellWidths.map(cw => tableChars.middleMiddle.repeat(cw + cellPadding*2)).join(tableChars.rowMiddle) + tableChars.rightMiddle;
+        const bottom = tableChars.bottomLeft + cellWidths.map(cw => tableChars.middleMiddle.repeat(cw + cellPadding*2)).join(tableChars.bottomMiddle) + tableChars.bottomRight;
 
-    return grid.map(row => "|" + row.join('|') + "|").join('\n');
+        grid.splice(1, 1); // remove alignment row
+        return (
+            top + '\n'
+            + grid.map(row => tableChars.left + row.join(tableChars.middle) + tableChars.right).join('\n'+middle+'\n') + '\n'
+            + bottom
+        );
+    } else {
+        return grid.map(row => "|" + row.join("|") + "|").join('\n');
+    }
+    
 }
 
 function getAlignedCellText(cellText: string, align: string, diff: number) {
@@ -134,6 +153,22 @@ function getAlignedCellText(cellText: string, align: string, diff: number) {
             return " ".repeat(diff) + cellText;
     }
 }
+
+const tableChars = {
+    middleMiddle: "─",
+    rowMiddle: "┼",
+    topRight: "┐",
+    topLeft: "┌",
+    leftMiddle: "├",
+    topMiddle: "┬",
+    bottomRight: "┘",
+    bottomLeft: "└",
+    bottomMiddle: "┴",
+    rightMiddle: "┤",
+    left: "│",
+    right: "│",
+    middle: "│",
+};
 
 /*
 export const prettifyTable = (mdt: string): string => {

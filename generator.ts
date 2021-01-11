@@ -76,7 +76,7 @@ export const generator = (node: Node): string | undefined => {
 
         case 'table':
             const t = node.children?.map((child: Node) => generator(child)).join('') || '';
-            return transformTable(t) + '\n';
+            return transformTable(t, true) + '\n';
 
         default:
             // console.log({...node});
