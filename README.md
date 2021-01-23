@@ -62,7 +62,6 @@ The module itself requires no permissions to run.
 ## Limitations
 
 - No syntax highlight
-- No table formatting
 - No \~\~strikethrough\~\~ or underline
 - Some hiccups with more complex markdowns
 

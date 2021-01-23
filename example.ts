@@ -131,18 +131,22 @@ ___
 
 ## Tables
 
-> 🔺 Currently tables are presented without formatting.
-
 |   a   |   b   |   c   |
 | ----- | :---: | ----: |
 |  123  |  456  |  789  |
 |  ABC  |  DEF  |  GHI  |
 
-| Option | Description |
-| ------ | ----------- |
-| data   | path to data files to supply the data that will be passed into templates. |
-| engine | engine to be used for processing templates. Handlebars is the default. |
-| ext    | extension to be used for dest files. |
+| left1 |left2|   center   |  right  |
+|-------|:----|:-----:|----:|
+|  123  | 456 |  789  | 101 |
+|  \`ABC\`  | **DEF** |  *GHI*  | JKL |
+
+> | Option | Description |
+> | ------ | ----------- |
+> | data   | path to data files to supply the </br> data that will be passed into templates. |
+> | engine | engine to be used for processing templates. Handlebars is the default. |
+> | ext    | extension to be used for dest files. |
+> | image  | ![image](https://deno.land/logo.svg) |
 
 
 | Option | Description |
@@ -150,7 +154,7 @@ ___
 | data   | path to data files to supply the data that will be passed into templates. |
 | engine | engine to be used for processing templates. Handlebars is the default. |
 | ext    | extension to be used for dest files. |
-
+| image  | ![image](https://deno.land/logo.svg) |
 
 ## Links
 

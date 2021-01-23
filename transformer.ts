@@ -9,6 +9,10 @@ function recurse(node: Node, parent: Node) {
 }
 
 function transformNode(node: Node, parent: Node) {
+
+    // TODO(littletof) move to extension
+    handleTable(node, parent);
+
     if (node.type === 'text') {
         /* if (isMarkdownTable(node.value)) {
             node.value = transformTable(node.value);
@@ -49,7 +53,7 @@ function transformNode(node: Node, parent: Node) {
                 switch (parent.kind) {
                     case 'blockquote':
                         // add color to each line, so when adding | per line, it doesnt mess the color up
-                        node.value = node.value.split('\n').map((l: string) => colors.gray(colors.italic(l))).join('\n');
+                        // node.value = node.value.split('\n').map((l: string) => colors.gray(colors.italic(l))).join('\n');
                         break;
 
                     case 'listItem':
@@ -95,10 +99,11 @@ function transformNode(node: Node, parent: Node) {
         case 'code':
             let codeBlock = '';
             const xPadding = 2;
+            // TODO(littletof) remove dot as a filler. But space causes errors in vscode terminal, with empty lines
             const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
             
             const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
-            const lines: string[] = node.value.replaceAll('\r', '').split('\n');
+            const lines: string[] = node.value.replaceAll('\r', '').replaceAll('\t', '    ').split('\n');
             const max = Math.max(...lines.map(l => l.length), title.length);
 
             codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';
@@ -142,3 +147,13 @@ function transformNode(node: Node, parent: Node) {
 export const transformer = async (mdast: Node) => {
     recurse(mdast, null!);
 };
+
+
+function handleTable(node: Node, parent: Node) {
+    if(node.type === "paragraph") {
+        const table = node.children?.map(c => c.value).join("").trim();
+        if(isMarkdownTable(table || '')) {
+            node.type = 'table';
+        }
+    }
+}
