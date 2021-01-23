@@ -33,7 +33,7 @@ function sum(...nums: number[]): number {
 |   a   |   b   |   c   |
 | ----- | :---: | ----: |
 |  123  |  456  |  789  |
-|  ABC  |  DEF  |  GHI  |
+|  ABCDEF  |  DEFGHI  |  GHIJKL  |
 
 [Deno](https://deno.land)
 [LinkReference]
