@@ -102,7 +102,7 @@ export function transformTable(markdownTable: string, borders?: boolean) {
         const cellMax = Math.max(...grid.map((row, ri) => colors.stripColor(ri === 1 ? "" : (row[i] || "").trim()).length));        
         cellWidths.push(cellMax);
 
-        const align = grid[1][i] || ':--'; // defaults to left, to give chance to render markdown, not to throw
+        const align = grid[1][i]?.trim() || ':--'; // defaults to left, to give chance to render markdown, not to throw
         const cellAlign = align.startsWith(':') ? (align.endsWith(':') ? 'center' : 'left') : (align.endsWith(':') ? 'right' : 'left');
         // grid.map(row => row.map(cell => cell.padEnd(cellMax)));
         grid = grid.map((row, ri) => {
