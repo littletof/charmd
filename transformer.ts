@@ -1,14 +1,29 @@
 // Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/transformer.ts
 
 import {colors} from './deps.ts';
+import { Options } from "./renderer.ts";
 import { getHeaderFormatter, isMarkdownTable, Node, transformTable } from './utils.ts';
 
-function recurse(node: Node, parent: Node) {
-    transformNode(node, parent);
-    node.children?.forEach(n => recurse(n, node));
+export function transformer(mdast: Node, options: Options | undefined) {
+    recurse(mdast, null!, options);
+};
+
+function recurse(node: Node, parent: Node, options: Options | undefined) {
+    transformNode(node, parent, options);
+    node.children?.forEach(n => recurse(n, node, options));
 }
 
-function transformNode(node: Node, parent: Node) {
+function transformNode(node: Node, parent: Node, options: Options | undefined) {
+
+    if(options?.extensions) {
+        for(const ext of options?.extensions) {
+            const skipOthers = ext.transformNode?.(node, parent, options);
+            if(skipOthers) {
+                // skip all other transformations
+                return;
+            }
+        }
+    }
 
     // TODO(littletof) move to extension
     handleTable(node, parent);
@@ -143,11 +158,6 @@ function transformNode(node: Node, parent: Node) {
             break;
     }
 }
-
-export const transformer = async (mdast: Node) => {
-    recurse(mdast, null!);
-};
-
 
 function handleTable(node: Node, parent: Node) {
     if(node.type === "paragraph") {
