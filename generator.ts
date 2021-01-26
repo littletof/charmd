@@ -19,6 +19,15 @@ export function generator(node: Node, parent: Node, options: Options | undefined
         case 'root':
             return node.children?.map((child: Node) => generator(child, node, options)).join('\n');
 
+        case 'definition':
+            const def = `${colors.cyan(`[${node.label}]`)}: [${node.title ?? ''}](${node.url})`;
+            return colors.gray(colors.italic(`${def}\n`));
+        case 'image':
+            const link = `![${node.alt}](${node.url})`;
+            return colors.gray(colors.italic(`Image: ${link}`));
+        case 'imageReference':
+            const ref = `![${node.alt}]${colors.cyan(`[${node.label}]`)}`;
+            return colors.gray(colors.italic(`Image reference: ${ref}`));
         case 'link':
         case 'strong':
         case 'emphasis':
@@ -77,9 +86,39 @@ export function generator(node: Node, parent: Node, options: Options | undefined
                 })
                 .join('');
 
+        case 'code':
+            let codeBlock = '';
+            const xPadding = 2;
+            // TODO(littletof) remove dot as a filler. But space causes errors in vscode terminal, with empty lines
+            const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
+            
+            const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
+            const lines: string[] = node.value.replaceAll('\r', '').replaceAll('\t', '    ').split('\n');
+            const max = Math.max(...lines.map(l => l.length), title.length);
+
+            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';
+
+
+            codeBlock += padString(max + 2*xPadding) + "\n";
+
+            lines.forEach(l => {
+                if(l.trim().length === 0) {
+                    l = ' ';
+                }
+                const paddingStart = padString(xPadding);
+                const code = colors.bgBrightBlack(colors.black(colors.italic(l)));
+                const paddingEnd = padString(max-l.length + xPadding);
+
+                codeBlock+= paddingStart + code + paddingEnd + /* `(${l.length},${max})` + */ '\n';
+            });
+            codeBlock += padString(max + 2*xPadding) + "\n";
+
+            return codeBlock;
+        case 'inlineCode':
+            return colors.bgBrightBlack(colors.black(` ${node.value} `));
+
         case 'image':
         case 'thematicBreak':
-        case 'code':
         case 'text':
             return node.value;
         case 'html':

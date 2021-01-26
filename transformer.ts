@@ -4,6 +4,8 @@ import {colors} from './deps.ts';
 import { Options } from "./renderer.ts";
 import { getHeaderFormatter, isMarkdownTable, Node, transformTable } from './utils.ts';
 
+// TODO move most transforms, which assign node.value to generator
+
 export function transformer(mdast: Node, options: Options | undefined) {
     recurse(mdast, null!, options);
 };
@@ -25,14 +27,8 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
         }
     }
 
-    // TODO(littletof) move to extension
+    // TODO(littletof) move to proper place
     handleTable(node, parent);
-
-    if (node.type === 'text') {
-        /* if (isMarkdownTable(node.value)) {
-            node.value = transformTable(node.value);
-        } */
-    }
 
     if (node.type === 'paragraph') {
         switch (parent?.type) {
@@ -52,7 +48,7 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
                 break;
 
             case 'link':
-                const link = `[${node.value}](${parent.url})`; // terminalLink(node.value as string, (parent as any).url);
+                const link = `[${node.value}](${parent.url})`;
                 node.value = colors.cyan(link);;
                 break;
 
@@ -80,23 +76,12 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
 
     switch (node.type) {
         case 'image':
-            const link = `![${node.alt}](${node.url})`;// TODO terminalLink(node.alt as string, node.url as string);
-            node.value = colors.gray(colors.italic(`Image: ${link}`));
             break;
         case 'imageReference':
-            const ref = `![${node.alt}]${colors.cyan(`[${node.label}]`)}`;
-            node.value = colors.gray(colors.italic(`Image reference: ${ref}`));
-            node.type = 'text';
             break;
         case 'definition':
-            const def = `${colors.cyan(`[${node.label}]`)}: [${node.title ?? ''}](${node.url})`;
-            node.value = colors.gray(colors.italic(`${def}\n`));
-            node.type = 'text';
             break;
-
         case 'inlineCode':
-            node.value = colors.bgBrightBlack(colors.black(` ${node.value} `));
-            node.type = 'text';
             break;
 
         case 'thematicBreak':
@@ -112,49 +97,6 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
             break;
 
         case 'code':
-            let codeBlock = '';
-            const xPadding = 2;
-            // TODO(littletof) remove dot as a filler. But space causes errors in vscode terminal, with empty lines
-            const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
-            
-            const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
-            const lines: string[] = node.value.replaceAll('\r', '').replaceAll('\t', '    ').split('\n');
-            const max = Math.max(...lines.map(l => l.length), title.length);
-
-            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';
-
-
-            codeBlock += padString(max + 2*xPadding) + "\n";
-
-            lines.forEach(l => {
-                if(l.trim().length === 0) {
-                    l = ' ';
-                }
-                const paddingStart = padString(xPadding);
-                const code = colors.bgBrightBlack(colors.black(colors.italic(l)));
-                const paddingEnd = padString(max-l.length + xPadding);
-
-                codeBlock+= paddingStart + code + paddingEnd + /* `(${l.length},${max})` + */ '\n';
-            });
-            codeBlock += padString(max + 2*xPadding) + "\n";
-
-            node.value = codeBlock;
-
-            /* const codeLang = node.lang ? chalk.gray('// ' + node.lang + '\n') : '';
-            node.value += '\n';
-            if (node.lang === 'ts' || node.lang === 'js' || node.lang === 'json') {
-                node.value = cardinal.highlight(node.value);
-            } else {
-                try {
-                    node.value = highlightWithPrism(
-                        node.value as string,
-                        node.lang as string
-                    );
-                } catch (error) {
-                    node.value = chalk.gray(node.value);
-                }
-            }
-            node.value = codeLang + node.value; */
             break;
     }
 }

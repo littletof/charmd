@@ -11,7 +11,7 @@ export interface Extension {
     /** Called after all the transformations ran for all nodes */
     postTransform?(astRoot: Node, options: Options | undefined): void;
 
-    generateNode?(node: Node, parent: Node | undefined, options: Options | undefined): string; // TODO add original generate as param
+    generateNode?(node: Node, parent: Node | undefined, options: Options | undefined): string | void; // TODO add original generate as param
     postGenerate?(rendered: string, options: Options | undefined): string;
 }
 
