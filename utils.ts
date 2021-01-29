@@ -21,6 +21,7 @@ export type Node = {
     lang?: string;
     label?: string;
     title?: string;
+    listLevel?: number;
 };
 
 function polyfillDocumentCreateForMDAST() {

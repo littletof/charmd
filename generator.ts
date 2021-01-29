@@ -57,34 +57,24 @@ export function generator(node: Node, parent: Node, options: Options | undefined
                     .map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
 
         case 'list':
-            let returnNode;
-            if (node.ordered) {
-                returnNode = node.children?.map((child: Node, index: number) => {
-                    let numberIndicator = colors.bold(colors.gray(index + 1 + '.'));
-                    return `${numberIndicator} ` + generator(child, node, options);
-                });
+            const generateList = (icon: (i: number) => string) => {
+                const tabForList = '  ';
+                return node.children?.map(
+                (child: Node, i: number) =>  (icon(i) + generator(child, node, options))
+                    ?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n' // indent full list
+                ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
+            };
+    
+            if(node.ordered) {
+                return generateList(i => colors.gray(`${i+1}. `));
             } else {
-                returnNode = node.children?.map(
-                    (child: Node) => `${colors.bold(colors.gray('-'))} ` + generator(child, node, options)
-                );
+                const icons = ['-', '◦', '▪', '▸']; // TODO possible options
+                const icon = icons[Math.min(node.listLevel!, icons.length-1)];
+                return generateList(i => colors.gray(`${icon} `));
             }
-            return returnNode!.join('');
 
         case 'listItem':
-            return node.children?.map((child: Node) => {
-                    if (child.type === 'list') {
-                        child.tabed = true;
-                        return '    ' + generator(child, node, options);
-                    } else {
-                        if (child.tabed) {
-                            child.tabed = true;
-                            return '    ' + generator(child, node, options);
-                        } else {
-                            return generator(child, node, options);
-                        }
-                    }
-                })
-                .join('');
+            return node.children?.map((ch: any) => generator(ch, parent, options)).join('');
 
         case 'code':
             let codeBlock = '';

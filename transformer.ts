@@ -52,6 +52,10 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
     }
 
     switch (node.type) {
+        case 'list':
+            node.listLevel = parent.type === 'listItem' ? parent.listLevel! + 1 : 0;
+            node.children?.forEach((ch: any) => ch.listLevel = node.listLevel);
+            break;
         case 'image':
             break;
         case 'imageReference':
