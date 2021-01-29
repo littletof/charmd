@@ -30,17 +30,6 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
     // TODO(littletof) move to proper place
     handleTable(node, parent);
 
-    if (node.type === 'paragraph') {
-        switch (parent?.type) {
-            case 'blockquote':
-                node.kind = 'blockquote';
-                break;
-            case 'listItem':
-                node.kind = 'listItem';
-                break;
-        }
-    }
-
     if (node.type === 'text') {
         switch (parent.type) {
             case 'heading':
@@ -59,18 +48,6 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
             case 'strong':
                 node.value = colors.bold(node.value);
                 break;
-
-            case 'paragraph':
-                switch (parent.kind) {
-                    case 'blockquote':
-                        // add color to each line, so when adding | per line, it doesnt mess the color up
-                        // node.value = node.value.split('\n').map((l: string) => colors.gray(colors.italic(l))).join('\n');
-                        break;
-
-                    case 'listItem':
-                        node.value = colors.reset(node.value);
-                        break;
-                }
         }
     }
 
