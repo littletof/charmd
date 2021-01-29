@@ -224,14 +224,16 @@ console.log(renderMarkdown(md, {
 
       if(node.type === 'list') {
         if(node.ordered) {
-
+          const tabForList = '  ';
+          return node.children?.map(
+            (child: Node, i: number) =>  (colors.gray(`${i+1}. `) + gfn(child, node, options))?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n'
+          ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n');
         } else {
           const tabForList = '  ';
           const icon = ['-', '◦', '▪', '▸'][Math.min(node.listLevel, 3)] // '▪▸◦◾'
           return node.children?.map(
             (child: Node) =>  (colors.gray(`${icon} `) + gfn(child, node, options))?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n'
           ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n');
-          // TODO remove 1 depth of tab from each line
         }
       }
 
