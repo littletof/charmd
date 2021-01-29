@@ -223,24 +223,28 @@ console.log(renderMarkdown(md, {
     generateNode(gfn, node: Node &any, parent: Node &any, options) {
 
       if(node.type === 'list') {
+
+        const generateList = (icon: (i: number) => string) => {
+          const tabForList = '  ';
+          return node.children?.map(
+            (child: Node, i: number) =>  (icon(i) + gfn(child, node, options))
+              ?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n' // indent full list
+          ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
+        }
+
         if(node.ordered) {
-          const tabForList = '  ';
-          return node.children?.map(
-            (child: Node, i: number) =>  (colors.gray(`${i+1}. `) + gfn(child, node, options))?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n'
-          ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n');
+          return generateList(i => colors.gray(`${i+1}. `));
         } else {
-          const tabForList = '  ';
-          const icon = ['-', '◦', '▪', '▸'][Math.min(node.listLevel, 3)] // '▪▸◦◾'
-          return node.children?.map(
-            (child: Node) =>  (colors.gray(`${icon} `) + gfn(child, node, options))?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n'
-          ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n');
+          const icons = ['-', '◦', '▪', '▸']; // TODO possible options
+          const icon = icons[Math.min(node.listLevel, icons.length-1)];
+          return generateList(i => colors.gray(`${icon} `));
         }
       }
 
       if(node.type === 'listItem') {
         return node.children?.map((ch: any) => {
           return gfn(ch, parent, options)
-        }).join('')
+        }).join('');
       }
     },
 
