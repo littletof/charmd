@@ -8,7 +8,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
     if(options?.extensions) {
         for(const ext of options?.extensions) {
-            const hasResult = ext.generateNode?.(node, parent, options);
+            const hasResult = ext.generateNode?.(generator, node, parent, options);
             if(hasResult) {
                 return hasResult;
             }

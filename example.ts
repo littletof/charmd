@@ -1,4 +1,6 @@
+import { colors } from "./deps.ts";
 import {renderMarkdown} from './mod.ts';
+import { Node } from "./utils.ts";
 
 const demoText = `
 # deno terminal markdown
@@ -203,4 +205,55 @@ if(Deno.args[0]) {
 }
 
 // renderMarkdown(md)
-console.log(renderMarkdown(md));
+console.log(renderMarkdown(md, {
+  extensions: [{
+    postAST(ast) {
+      // console.log(JSON.stringify(ast, undefined, 2));
+    },
+
+    transformNode(trfn, node: Node & any, parent?: Node & any) {
+      if(node.type === 'list') {
+        node.listLevel = parent?.type === 'listItem' ? parent.listLevel + 1 : 0;
+        node.children.forEach((ch: any) => ch.listLevel = node.listLevel);
+
+        return true;
+      }
+    },
+
+    generateNode(gfn, node: Node &any, parent: Node &any, options) {
+
+      if(node.type === 'list') {
+        if(node.ordered) {
+
+        } else {
+          const tabForList = '  ';
+          const icon = ['-', '◦', '▪', '▸'][Math.min(node.listLevel, 3)] // '▪▸◦◾'
+          return node.children?.map(
+            (child: Node) =>  (colors.gray(`${icon} `) + gfn(child, node, options))?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n'
+          ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n');
+          // TODO remove 1 depth of tab from each line
+        }
+      }
+
+      if(node.type === 'listItem') {
+        return node.children?.map((ch: any) => {
+          return gfn(ch, parent, options)
+        }).join('')
+      }
+    },
+
+    postTransform(ast) {
+      /* const rPrint = (node: Node, offSet: string) => {
+        console.log(JSON.stringify({...node, position: undefined, children: undefined}, undefined, 2).split('\n').map(l => offSet + l).join('\n'));
+        node.children?.forEach(ch => rPrint(ch, offSet + "|   "));
+      }
+
+      rPrint(ast, ""); */
+    }
+    /* transformNode(node, parent, options){
+      // return true;
+    },
+    generateNode(node, parent, options){
+    } */
+  }]
+}));

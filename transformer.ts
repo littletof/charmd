@@ -19,7 +19,7 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
 
     if(options?.extensions) {
         for(const ext of options?.extensions) {
-            const skipOthers = ext.transformNode?.(node, parent, options);
+            const skipOthers = ext.transformNode?.(transformNode, node, parent, options);
             if(skipOthers) {
                 // skip all other transformations
                 return;

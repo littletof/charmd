@@ -6,12 +6,21 @@ import { generator } from './generator.ts';
 export interface Extension {
     /** Called with the generated AST's root node, before any transformations */
     postAST?(astRoot: Node, options: Options | undefined): void;
+
     /** Called with each node */
-    transformNode?(node: Node, parent: Node | undefined, options: Options | undefined): boolean | void; // TODO add original transform as param
+    transformNode?(
+        transformerFn: (node: Node, parent: Node, options: Options | undefined) => void,
+        node: Node, parent: Node | undefined, options: Options | undefined
+    ): boolean | void;
+
     /** Called after all the transformations ran for all nodes */
     postTransform?(astRoot: Node, options: Options | undefined): void;
 
-    generateNode?(node: Node, parent: Node | undefined, options: Options | undefined): string | void; // TODO add original generate as param
+    generateNode?(
+        generatorFn: (node: Node, parent: Node, options: Options | undefined) => string | undefined,
+        node: Node, parent: Node | undefined, options: Options | undefined
+    ): string | void;
+
     postGenerate?(rendered: string, options: Options | undefined): string;
 }
 
