@@ -42,11 +42,11 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
                 break;
 
             case 'emphasis':
-                node.value = colors.italic(node.value);
+                // node.value = colors.italic(node.value);
                 break;
 
             case 'strong':
-                node.value = colors.bold(node.value);
+                // node.value = colors.bold(node.value);
                 break;
         }
     }

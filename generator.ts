@@ -33,8 +33,11 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             const link = `[${linkText}](${node.url})`
             return colors.cyan(link);
         case 'strong':
+            const strongContent = node.children?.map((child: Node) => generator(child, node, options)).join('');
+            return colors.bold(strongContent || '');
         case 'emphasis':
-            return node.children?.map((child: Node) => generator(child, node, options)).join(' ');
+            const emphasisContent =  node.children?.map((child: Node) => generator(child, node, options)).join('');
+            return colors.italic(emphasisContent || '');
         case 'heading':
             return getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth!) + ' ' + node.children?.map((ch: Node) => generator(ch, node, options)).join('')) + '\n'
 
