@@ -2,7 +2,7 @@
 
 import {colors} from './deps.ts';
 import { Options } from "./renderer.ts";
-import { getHeaderFormatter, isMarkdownTable, Node, transformTable } from './utils.ts';
+import { isMarkdownTable, Node } from './utils.ts';
 
 // TODO move most transforms, which assign node.value to generator
 
@@ -29,27 +29,6 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
 
     // TODO(littletof) move to proper place
     handleTable(node, parent);
-
-    if (node.type === 'text') {
-        switch (parent.type) {
-            case 'heading':
-                // node.value = getHeaderFormatter(parent.depth || 0)(node.value);
-                break;
-
-            case 'link':
-                /* const link = `[${node.value}](${parent.url})`;
-                node.value = colors.cyan(link);; */
-                break;
-
-            case 'emphasis':
-                // node.value = colors.italic(node.value);
-                break;
-
-            case 'strong':
-                // node.value = colors.bold(node.value);
-                break;
-        }
-    }
 
     switch (node.type) {
         case 'list':

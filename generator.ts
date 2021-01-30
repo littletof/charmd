@@ -65,8 +65,8 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             const generateList = (icon: (i: number) => string) => {
                 const tabForList = '  ';
                 return node.children?.map(
-                (child: Node, i: number) =>  (icon(i) + generator(child, node, options))
-                    ?.split('\n').slice(0, -1).map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n' // indent full list
+                    (child: Node, i: number) =>  (icon(i) + generator(child, node, options))
+                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n' // indent full list
                 ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
             };
     
@@ -79,6 +79,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             }
 
         case 'listItem':
+            // TODO join with \n fixes codeblocks in details in list, but adds extra newline to some li-s
             return node.children?.map((ch: any) => generator(ch, parent, options)).join('');
 
         case 'code':
@@ -115,7 +116,6 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             // return colors.white(colors.inverse(colors.bgBlack(` ${node.value} `))); // best
             return colors.inverse(` ${node.value} `);
 
-        case 'image':
         case 'thematicBreak':
         case 'text':
             return node.value;
