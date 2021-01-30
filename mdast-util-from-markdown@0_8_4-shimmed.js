@@ -3870,7 +3870,7 @@ var lineEnding$1 = _lineEnding;
 var thematicBreak$2 = _thematicBreak;
 var list$1 = _list;
 var setextUnderline$1 = _setextUnderline;
-var document = {
+var document1 = {
     42: list$1,
     43: list$1,
     45: list$1,
@@ -3942,7 +3942,7 @@ var disable = {
 };
 exports$E.contentInitial = contentInitial;
 exports$E.disable = disable;
-exports$E.document = document;
+exports$E.document = document1;
 exports$E.flow = flow;
 exports$E.flowInitial = flowInitial;
 exports$E.insideSpan = insideSpan;
@@ -4106,7 +4106,7 @@ function index(value) {
 var exports$16 = exports27;
 var exports28 = {
 };
-exports28 = fromMarkdown;
+exports28 = fromMarkdown2;
 var toString1 = exports$1;
 var assign4 = _assign;
 var own2 = _hasOwnProperty;
@@ -4117,7 +4117,7 @@ var preprocessor = _preprocess;
 var postprocess1 = _postprocess;
 var decode = _decodeEntity;
 var stringifyPosition = exports$16;
-function fromMarkdown(value, encoding, options) {
+function fromMarkdown2(value, encoding, options) {
     if (typeof encoding !== "string") {
         options = encoding;
         encoding = undefined;
@@ -4763,4 +4763,16 @@ function extension2(config, extension3) {
     }
 }
 var exports$17 = exports28;
-export { exports$17 as default };
+globalThis.document = {
+    createElement: (...data1)=>{
+        return new class {
+            set innerHTML(data) {
+                this.textContent = data;
+            }
+            textContent = '';
+        }();
+    }
+};
+document.createElement();
+const fromMarkdown1 = exports$17;
+export { fromMarkdown1 as fromMarkdown };
