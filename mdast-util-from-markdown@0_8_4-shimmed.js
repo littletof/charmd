@@ -4106,7 +4106,7 @@ function index(value) {
 var exports$16 = exports27;
 var exports28 = {
 };
-exports28 = fromMarkdown2;
+exports28 = fromMarkdown;
 var toString1 = exports$1;
 var assign4 = _assign;
 var own2 = _hasOwnProperty;
@@ -4117,7 +4117,7 @@ var preprocessor = _preprocess;
 var postprocess1 = _postprocess;
 var decode = _decodeEntity;
 var stringifyPosition = exports$16;
-function fromMarkdown2(value, encoding, options) {
+function fromMarkdown(value, encoding, options) {
     if (typeof encoding !== "string") {
         options = encoding;
         encoding = undefined;
@@ -4774,5 +4774,5 @@ globalThis.document = {
     }
 };
 document.createElement();
-const fromMarkdown1 = exports$17;
-export { fromMarkdown1 as fromMarkdown };
+const mdast1 = exports$17;
+export { mdast1 as mdast };
