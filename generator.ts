@@ -23,12 +23,15 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             const def = `${colors.cyan(`[${node.label}]`)}: [${node.title ?? ''}](${node.url})`;
             return colors.gray(colors.italic(`${def}\n`));
         case 'image':
-            const link = `![${node.alt}](${node.url})`;
-            return colors.gray(colors.italic(`Image: ${link}`));
+            const imageLink = `![${node.alt}](${node.url})`;
+            return colors.gray(colors.italic(`Image: ${imageLink}`));
         case 'imageReference':
             const ref = `![${node.alt}]${colors.cyan(`[${node.label}]`)}`;
             return colors.gray(colors.italic(`Image reference: ${ref}`));
         case 'link':
+            const linkText = node.children?.map(ch => generator(ch, node, options)).join('');
+            const link = `[${linkText}](${node.url})`
+            return colors.cyan(link);
         case 'strong':
         case 'emphasis':
             return node.children?.map((child: Node) => generator(child, node, options)).join(' ');

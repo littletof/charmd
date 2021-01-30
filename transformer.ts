@@ -37,8 +37,8 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
                 break;
 
             case 'link':
-                const link = `[${node.value}](${parent.url})`;
-                node.value = colors.cyan(link);;
+                /* const link = `[${node.value}](${parent.url})`;
+                node.value = colors.cyan(link);; */
                 break;
 
             case 'emphasis':
@@ -57,6 +57,8 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
             node.children?.forEach((ch: any) => ch.listLevel = node.listLevel);
             break;
         case 'image':
+            break;
+        case 'link':
             break;
         case 'imageReference':
             break;
