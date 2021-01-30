@@ -61,8 +61,8 @@ export function getHeaderFormatter(head: number) {
         (value: string) => colors.yellow(colors.bold(value)),
         (value: string) => colors.green(colors.bold(value)),
         (value: string) => colors.magenta(colors.bold(value)),
-        (value: string) => colors.blue(colors.bold(value)),
         (value: string) => colors.cyan(colors.bold(value)),
+        (value: string) => colors.blue(colors.bold(value)),
     ];
 
     if(head > headingFormats.length-1) {

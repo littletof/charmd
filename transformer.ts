@@ -33,7 +33,7 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
     if (node.type === 'text') {
         switch (parent.type) {
             case 'heading':
-                node.value = getHeaderFormatter(parent.depth || 0)(node.value);
+                // node.value = getHeaderFormatter(parent.depth || 0)(node.value);
                 break;
 
             case 'link':

@@ -1,6 +1,6 @@
 import { colors } from "./deps.ts";
 import {renderMarkdown} from './mod.ts';
-import { Node } from "./utils.ts";
+import { getHeaderFormatter, Node } from "./utils.ts";
 
 const demoText = `
 # deno terminal markdown
@@ -206,21 +206,25 @@ if(Deno.args[0]) {
 
 // renderMarkdown(md)
 console.log(renderMarkdown(md, {
-  extensions: [{
+  extensions: [/*{
     postAST(ast) {
       // console.log(JSON.stringify(ast, undefined, 2));
     },
 
     transformNode(trfn, node: Node & any, parent?: Node & any) {
-
+      if(node.type === 'text' && parent.type === 'heading') {
+        return true;
+      }
     },
 
     generateNode(gfn, node: Node &any, parent: Node &any, options) {
-
+      if(node.type === 'heading') {
+        return getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth) + ' ' + node.children?.map((ch: Node) => gfn(ch, node, options)).join('')) + '\n'
+      }
     },
 
     postTransform(ast) {
      
     }
-  }]
+  }*/]
 }));

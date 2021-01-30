@@ -33,8 +33,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
         case 'emphasis':
             return node.children?.map((child: Node) => generator(child, node, options)).join(' ');
         case 'heading':
-            const wholeHead = node.children?.map((child: Node) => generator(child, node, options)).join('');
-            return `${getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth || 1)+" ")}${wholeHead}` + '\n';
+            return getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth!) + ' ' + node.children?.map((ch: Node) => generator(ch, node, options)).join('')) + '\n'
 
         case 'linkReference':
             return (
@@ -105,7 +104,10 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
             return codeBlock;
         case 'inlineCode':
-            return colors.bgBrightBlack(colors.black(` ${node.value} `));
+            // return colors.inverse(colors.bgBrightWhite(colors.black(` ${node.value} `)));
+            // return colors.white(colors.inverse(colors.bgBrightBlack(` ${node.value} `))); works
+            // return colors.white(colors.inverse(colors.bgBlack(` ${node.value} `))); // best
+            return colors.inverse(` ${node.value} `);
 
         case 'image':
         case 'thematicBreak':
