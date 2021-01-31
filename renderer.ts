@@ -25,7 +25,9 @@ export interface Extension {
 }
 
 export interface Options {
-    extensions?: Extension[]
+    extensions?: Extension[];
+    tableBorder?: boolean; // TODO or string to override borderChars
+    listIcons?: string[];
 }
 
 /**

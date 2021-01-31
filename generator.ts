@@ -73,7 +73,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             if(node.ordered) {
                 return generateList(i => colors.gray(`${node.start ? node.start + i : i+1}. `));
             } else {
-                const icons = ['-', '◦', '▪', '▸']; // TODO possible options
+                const icons = options?.listIcons || ['-', '◦', '▪', '▸'];
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
                 return generateList(i => colors.gray(`${icon} `));
             }
@@ -118,7 +118,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
         case 'table':
             const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
-            return transformTable(t, true) + '\n';
+            return transformTable(t, options?.tableBorder ?? true) + '\n';
 
         case 'thematicBreak':
             return node.value;
