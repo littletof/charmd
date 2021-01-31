@@ -85,17 +85,16 @@ export function generator(node: Node, parent: Node, options: Options | undefined
         case 'code':
             let codeBlock = '';
             const xPadding = 2;
-            // TODO(littletof) remove dot as a filler. But space causes errors in vscode terminal, with empty lines
-            const padString = (length: number) => colors.bgBrightBlack(colors.gray('.'.repeat(length)));
+            const padString = (length: number) => colors.bgBrightBlack(colors.gray(' '.repeat(length)));
             
             const title = ` codeblock ${node.lang? `[${node.lang}]` : ''}`;
             const lines: string[] = node.value.replaceAll('\r', '').replaceAll('\t', '    ').split('\n');
             const max = Math.max(...lines.map(l => l.length), title.length);
 
-            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white('.'.repeat((max-title.length) + xPadding*2))) + '\n';
+            codeBlock += colors.bgWhite(colors.black(colors.italic(title)) + colors.white(' '.repeat((max-title.length) + xPadding*2))) + '\n';
 
-
-            codeBlock += padString(max + 2*xPadding) + "\n";
+            // codeBlock += padString(max + 2*xPadding) + "\n"; // VSCode terminal leaves these empty on first render
+            codeBlock += colors.bgBrightBlack(' ')+padString(max + 2*xPadding-1) + "\n";
 
             lines.forEach(l => {
                 if(l.trim().length === 0) {
@@ -107,7 +106,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
                 codeBlock+= paddingStart + code + paddingEnd + /* `(${l.length},${max})` + */ '\n';
             });
-            codeBlock += padString(max + 2*xPadding) + "\n";
+            codeBlock += colors.bgBrightBlack(' ')+padString(max + 2*xPadding-1) + "\n";
 
             return codeBlock;
         case 'inlineCode':
