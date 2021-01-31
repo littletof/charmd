@@ -27,14 +27,7 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
         }
     }
 
-    // TODO(littletof) move to proper place
-    handleTable(node, parent);
-
     switch (node.type) {
-        case 'list':
-            node.listLevel = parent.type === 'listItem' ? parent.listLevel! + 1 : 0;
-            node.children?.forEach((ch: any) => ch.listLevel = node.listLevel);
-            break;
         case 'image':
             break;
         case 'link':
@@ -44,6 +37,13 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
         case 'definition':
             break;
         case 'inlineCode':
+            break;
+        case 'code':
+            break;
+
+        case 'list':
+            node.listLevel = parent.type === 'listItem' ? parent.listLevel! + 1 : 0;
+            node.children?.forEach((ch: any) => ch.listLevel = node.listLevel);
             break;
 
         case 'thematicBreak':
@@ -57,13 +57,14 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
 
             node.value = colors.reset('_'.repeat(width) + '\n');
             break;
-
-        case 'code':
+        
+        case 'paragraph':
+            checkForTable(node, parent, options)
             break;
     }
 }
 
-function handleTable(node: Node, parent: Node) {
+function checkForTable(node: Node, parent: Node, options: Options | undefined) {
     if(node.type === "paragraph") {
         const table = node.children?.map(c => c.value).join("").trim();
         if(isMarkdownTable(table || '')) {

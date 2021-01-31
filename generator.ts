@@ -50,8 +50,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
         case 'paragraph':
             return (
-                node.children?.map((child: Node) => generator(child, node, options)).join('') +
-                '\n'
+                node.children?.map((child: Node) => generator(child, node, options)).join('') + '\n'
             );
 
         case 'blockquote':
@@ -109,21 +108,23 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             codeBlock += colors.bgBrightBlack(' ')+padString(max + 2*xPadding-1) + "\n";
 
             return codeBlock;
+
         case 'inlineCode':
             // return colors.inverse(colors.bgBrightWhite(colors.black(` ${node.value} `)));
             // return colors.white(colors.inverse(colors.bgBrightBlack(` ${node.value} `))); works
             // return colors.white(colors.inverse(colors.bgBlack(` ${node.value} `))); // best
             return colors.inverse(` ${node.value} `);
 
+        case 'table':
+            const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
+            return transformTable(t, true) + '\n';
+
         case 'thematicBreak':
+            return node.value;
         case 'text':
             return node.value;
         case 'html':
             return node.value;
-
-        case 'table':
-            const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
-            return transformTable(t, true) + '\n';
 
         default:
             // console.log({...node});
