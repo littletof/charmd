@@ -79,8 +79,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             }
 
         case 'listItem':
-            // TODO join with \n fixes codeblocks in details in list, but adds extra newline to some li-s
-            return node.children?.map((ch: any) => generator(ch, parent, options)).join('');
+            return node.children?.map((ch: Node) => generator(ch, parent, options)).join(node.spread? '\n' : '');
 
         case 'code':
             let codeBlock = '';
