@@ -22,6 +22,7 @@ export type Node = {
     label?: string;
     title?: string;
     listLevel?: number;
+    start?: number; // ordered list
 };
 
 function polyfillDocumentCreateForMDAST() {

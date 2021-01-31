@@ -63,14 +63,15 @@ export function generator(node: Node, parent: Node, options: Options | undefined
         case 'list':
             const generateList = (icon: (i: number) => string) => {
                 const tabForList = '  ';
-                return node.children?.map(
-                    (child: Node, i: number) =>  (icon(i) + generator(child, node, options))
-                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? '  ' +l: l)).join('\n') + '\n' // indent full list
-                ).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
+                return node.children?.map((child: Node, i: number) => {
+                    const tabForMultiline = ' '.repeat(colors.stripColor(icon(i)).length || 2);
+                    return (icon(i) + generator(child, node, options))
+                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? tabForMultiline +l: l)).join('\n') + '\n'; // indent full list
+                }).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
             };
     
             if(node.ordered) {
-                return generateList(i => colors.gray(`${i+1}. `));
+                return generateList(i => colors.gray(`${node.start ? node.start + i : i+1}. `));
             } else {
                 const icons = ['-', '◦', '▪', '▸']; // TODO possible options
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
