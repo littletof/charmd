@@ -124,7 +124,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
         case 'text':
             return node.value;
         case 'html':
-            return node.value;
+            return colors.gray(node.value);
 
         default:
             // console.log({...node});
