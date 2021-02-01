@@ -38,7 +38,7 @@ function sum(...nums: number[]): number {
 |  123  |  456  |  789  |
 |  ABCDEF  |  DEFGHI  |  GHIJKL  |
 
-[Deno](https://deno.land)
+[charMD](https://github.com/littletof/charmd)
 [LinkReference]
 
 [LinkReference]: https://deno.land/x
