@@ -1,5 +1,9 @@
 # 🎩 charMD
 
+[![deno badge](https://img.shields.io/badge/deno.land/x-success?logo=deno&logoColor=black&labelColor=white&color=black)](https://deno.land/x/charmd)
+
+*A simple, extendable markdown renderer for your terminal.*
+
 > 🚧 This module is in early developement, expect breaking changes 🚧
 
 **`charMD`** enables you to render a markdown text into a string, which printed in the terminal provides a well formatted output, instead of plain text.
@@ -11,13 +15,13 @@
 To see the general capabilities of this module run:
 
 ```bash
-deno run https://raw.githubusercontent.com/littletof/terminal_markdown/master/example.ts
+deno run https://deno.land/x/charmd/example.ts
 ```
 
 To see, how a specific markdown gets rendered run:
 
 ```bash
-deno run --allow-read https://raw.githubusercontent.com/littletof/terminal_markdown/master/example.ts ./README.md
+deno run --allow-read https://deno.land/x/charmd/example.ts ./README.md
 ```
 
 ## Usage
@@ -25,7 +29,7 @@ deno run --allow-read https://raw.githubusercontent.com/littletof/terminal_markd
 Simply import the module and call the `renderMarkdown` method with your markdown text.
 
 ```ts
-import { renderMarkdown } from 'https://raw.githubusercontent.com/littletof/terminal_markdown/master/mod.ts';
+import { renderMarkdown } from 'https://deno.land/x/charmd/mod.ts';
 
 console.log(renderMarkdown('# Hello world 🌍!'));
 ```
@@ -67,7 +71,7 @@ console.log(renderMarkdown(
 For direct use in the terminal run `cli.ts`:
 
 ```bash
-deno run --allow-net https://raw.githubusercontent.com/littletof/terminal_markdown/master/cli.ts -r https://raw.githubusercontent.com/denoland/deno/master/README.md
+deno run --allow-net https://deno.land/x/charmd/cli.ts -r https://raw.githubusercontent.com/denoland/deno/master/README.md
 ```
 
 Or install it with `deno install`
