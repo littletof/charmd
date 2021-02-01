@@ -4,23 +4,26 @@
 #### h4 Heading
 ##### h5 Heading
 ###### h6 Heading
+## `inline` *italic*
 
-**bold text**
-*italic text*
+**bold** __text__ *italic* _text_ ***bold and italic***
 
 > Some quote with **bold** and `block`
 > > and Another quote
 >> >> ### and some more quote
 
-* ListItem
-  + Indented list item:
-* ListItem
+* Lists support
+  + indentation
+    - and 
+      - `*`, `+`, `-`
+  - ordered listItems
+    1. first
+    2. second
+  - multi
+    line
+    content 
 
-1. Lorem ipsum dolor sit amet
-2. Consectetur adipiscing elit
-3. Integer molestie lorem at massa
-
-Inline `code`
+Inline `code` *`italics`* **`bold`** ***`both`***
 
 ```ts
 function sum(...nums: number[]): number {
@@ -35,7 +38,7 @@ function sum(...nums: number[]): number {
 |  123  |  456  |  789  |
 |  ABCDEF  |  DEFGHI  |  GHIJKL  |
 
-[Deno](https://deno.land)
+[charMD](https://github.com/littletof/charmd)
 [LinkReference]
 
 [LinkReference]: https://deno.land/x

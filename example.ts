@@ -1,3 +1,4 @@
+import { colors } from "./deps.ts";
 import {renderMarkdown} from './mod.ts';
 
 const demoText = `
@@ -14,12 +15,12 @@ deno run --allow-read https://raw.githubusercontent.com/littletof/terminal_markd
 
 # h1 Heading
 
-h1 Heading with ===
+h1 Heading with \`===\`
 ===
 
 ## h2 Heading
 
-h2 Heading with ---
+h2 Heading with \`---\`
 ---
 
 ### h3 Heading
@@ -41,8 +42,6 @@ _This is italic text \`\_\`_
 
 **an *italic* in bold**
 
-> 🔺 no strikethrough or underline, and some combinations doesnt work properly currently
-
 ## Blockquotes
 
 > Blockquotes can also be nested...
@@ -61,14 +60,12 @@ and more
 
 ## Lists
 
-> 🔺 problems with multitabbed lists, extra list numbering and list following another one
-
 ### Unordered
 
 + Create a list by starting a line with \`+\`, \`-\`, or \`*\`
   - Indented list item:
     * Subsublist item
-    + Subsublist item
+      + Subsublist item
 + Main list item
 
 ### Ordered
@@ -85,7 +82,7 @@ and more
 
 ## Code
 
-Inline \`code\`
+Inline \`code\` *\`italics\`* **\`bold\`** ***\`both\`***
 
 Indented code
 
@@ -101,18 +98,12 @@ Block code "fences"
 Sample text here...
 \`\`\`
 
-No syntax highlighting
+Codeblock with lang
 
 \`\`\`ts
 function sum(...nums: number[]): number {
   return nums.reduce((sum, num) => sum + num, 0);
 }
-
-let a: number = 1;
-let b: number = 2;
-let result: number = sum(a, b);
-
-console.log(\`\${ a } + \${ b } = \${ result }\`);
 \`\`\`
 
 ## Horizontal Rules
@@ -134,27 +125,17 @@ ___
 |   a   |   b   |   c   |
 | ----- | :---: | ----: |
 |  123  |  456  |  789  |
-|  ABC  |  DEF  |  GHI  |
+|  ABCDEF  |  DEFGHI  |  GHIJKL  |
 
 | left1 |left2|   center   |  right  |
 |-------|:----|:-----:|----:|
 |  123  | 456 |  789  | 101 |
-|  \`ABC\`  | **DEF** |  *GHI*  | JKL |
+|  \`ABC\`  | **DEF** |  *GHI*  | ![image](docs/showcase.png) |
 
-> | Option | Description |
-> | ------ | ----------- |
-> | data   | path to data files to supply the </br> data that will be passed into templates. |
-> | engine | engine to be used for processing templates. Handlebars is the default. |
-> | ext    | extension to be used for dest files. |
-> | image  | ![image](https://deno.land/logo.svg) |
-
-
-| Option | Description |
-| ------:| -----------:|
-| data   | path to data files to supply the data that will be passed into templates. |
-| engine | engine to be used for processing templates. Handlebars is the default. |
-| ext    | extension to be used for dest files. |
-| image  | ![image](https://deno.land/logo.svg) |
+> |   a   |   b   |   c   |
+> | ----- | :---: | ----: |
+> |  123  |  456  |  789  |
+> |  ABCDEF  |  DEFGHI  |  GHIJKL  |
 
 ## Links
 

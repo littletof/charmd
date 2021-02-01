@@ -1,12 +1,5 @@
-/* import unified from 'unified';
-import parser from 'remark-parse';
-import stringify from 'remark-stringify';
-import marktable from 'marktable';
-import Table from 'cli-table';
-import Axios from 'axios';
-import highlight from 'prism-cli'; */
-
 import { colors, fromMarkdown } from './deps.ts';
+import { MdastOptions } from "./mod.ts";
 
 export type Node = {
     type: string;
@@ -21,6 +14,9 @@ export type Node = {
     lang?: string;
     label?: string;
     title?: string;
+    listLevel?: number;
+    start?: number; // ordered list
+    spread?: boolean; // list
 };
 
 function polyfillDocumentCreateForMDAST() {
@@ -39,11 +35,13 @@ function polyfillDocumentCreateForMDAST() {
 }
 
 /**
+ * **UNSTABLE**
+ * 
  * Returns an AST of the provided markdown.
  * It is a basic wrapper around https://github.com/syntax-tree/mdast-util-from-markdown,
  * `encoding` and `options` are passed straight to its `fromMarkdown` function
  */
-export function toAst(markdown: string, encodig?: any, options?: {extensions?: any[], mdastExtensions?: any[]}): Node {
+export function toAst(markdown: string, encodig?: any, options?: MdastOptions): Node {
     const prevDocument = polyfillDocumentCreateForMDAST();
     const value = fromMarkdown(markdown, encodig, options);
     
@@ -60,8 +58,8 @@ export function getHeaderFormatter(head: number) {
         (value: string) => colors.yellow(colors.bold(value)),
         (value: string) => colors.green(colors.bold(value)),
         (value: string) => colors.magenta(colors.bold(value)),
-        (value: string) => colors.blue(colors.bold(value)),
         (value: string) => colors.cyan(colors.bold(value)),
+        (value: string) => colors.blue(colors.bold(value)),
     ];
 
     if(head > headingFormats.length-1) {
@@ -77,7 +75,7 @@ export function isMarkdownTable(text: string) {
     return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
-export function transformTable(markdownTable: string, borders?: boolean) {
+export function generateTable(markdownTable: string, borders?: boolean) {
 
     let grid = markdownTable
                 .trim()
@@ -169,83 +167,3 @@ const tableChars = {
     right: "│",
     middle: "│",
 };
-
-/*
-export const prettifyTable = (mdt: string): string => {
-    let parsedTable: string = marktable(mdt);
-
-    let tableArray = parsedTable
-        .trim()
-        .split('\n')
-        .map((s) =>
-            s
-                .split('|')
-                .filter((c) => !c.includes('-'))
-                .filter((d) => /\s+/.test(d))
-        )
-        .filter((e) => e.length > 1);
-
-    const table = new Table({
-        head: tableArray.shift(),
-        chars: {
-            top: '═',
-            'top-mid': '╤',
-            'top-left': '╔',
-            'top-right': '╗',
-            bottom: '═',
-            'bottom-mid': '╧',
-            'bottom-left': '╚',
-            'bottom-right': '╝',
-            left: '║',
-            'left-mid': '╟',
-            mid: '─',
-            'mid-mid': '┼',
-            right: '║',
-            'right-mid': '╢',
-            middle: '│',
-        },
-    });
-
-    tableArray.forEach((e) => {
-        table.push(e);
-    });
-
-    return table.toString();
-};
-
-export const highlightWithPrism = (code: string, language: string): string => {
-    return highlight(code, language, {
-        colors: {
-            comment: '\x1B[38;2;107;114;128m',
-            prolog: '\x1B[38;2;107;114;128m',
-            doctype: '\x1B[38;2;107;114;128m',
-            cdata: '\x1B[38;2;107;114;128m',
-            punctuation: '\x1B[38;2;153;153;153m',
-            property: '\x1B[38;2;153;0;85m',
-            tag: '\x1B[38;2;153;0;85m',
-            boolean: '\x1B[38;2;153;0;85m',
-            number: '\x1B[38;2;153;0;85m',
-            constant: '\x1B[38;2;153;0;85m',
-            symbol: '\x1B[38;2;153;0;85m',
-            deleted: '\x1B[38;2;153;0;85m',
-            selector: '\x1B[38;2;16;185;129m',
-            'attr-name': '\x1B[38;2;16;185;129m',
-            string: '\x1B[38;2;16;185;129m',
-            char: '\x1B[38;2;16;185;129m',
-            builtin: '\x1B[38;2;16;185;129m',
-            inserted: '\x1B[38;2;16;185;129m',
-            operator: '\x1B[38;2;154;110;58m',
-            entity: '\x1B[38;2;154;110;58m',
-            url: '\x1B[38;2;154;110;58m',
-            atrule: '\x1B[38;2;96;165;250m',
-            'attr-value': '\x1B[38;2;96;165;250m',
-            keyword: '\x1B[38;2;96;165;250m',
-            function: '\x1B[38;2;221;74;104m',
-            'class-name': '\x1B[38;2;221;74;104m',
-            regex: '\x1B[38;2;238;153;0m',
-            important: '\x1B[38;2;238;153;0m',
-            variable: '\x1B[38;2;238;153;0m',
-        },
-    });
-};
-*/
