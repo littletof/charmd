@@ -1,10 +1,6 @@
-# charMD 🎩🔮
-
-A simple, extendable markdown renderer for your terminal.
+# 🎩 charMD
 
 > 🚧 This module is in early developement, expect breaking changes 🚧
-
-> Also not yet released in any repository. Until than, you can use it with the raw urls
 
 **`charMD`** enables you to render a markdown text into a string, which printed in the terminal provides a well formatted output, instead of plain text.
 
@@ -12,7 +8,7 @@ A simple, extendable markdown renderer for your terminal.
 
 ## Try it out
 
-To see a general capabilities of this module run:
+To see the general capabilities of this module run:
 
 ```bash
 deno run https://raw.githubusercontent.com/littletof/terminal_markdown/master/example.ts
