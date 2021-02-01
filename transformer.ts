@@ -1,21 +1,18 @@
-// Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/transformer.ts
-
 import {colors} from './deps.ts';
 import { Options } from "./renderer.ts";
 import { isMarkdownTable, Node } from './utils.ts';
 
-// TODO move most transforms, which assign node.value to generator
-
-export function transformer(mdast: Node, options: Options | undefined) {
+/** The transfromer function is used to recuresively visit each node and make modifications to the `AST` for later steps */
+export function transformer(mdast: Node, options: Options) {
     recurse(mdast, null!, options);
 };
 
-function recurse(node: Node, parent: Node, options: Options | undefined) {
+function recurse(node: Node, parent: Node, options: Options) {
     transformNode(node, parent, options);
     node.children?.forEach(n => recurse(n, node, options));
 }
 
-function transformNode(node: Node, parent: Node, options: Options | undefined) {
+function transformNode(node: Node, parent: Node, options: Options) {
 
     if(options?.extensions) {
         for(const ext of options?.extensions) {
@@ -64,7 +61,7 @@ function transformNode(node: Node, parent: Node, options: Options | undefined) {
     }
 }
 
-function checkForTable(node: Node, parent: Node, options: Options | undefined) {
+function checkForTable(node: Node, parent: Node, options: Options) {
     if(node.type === "paragraph") {
         const table = node.children?.map(c => c.value).join("").trim();
         if(isMarkdownTable(table || '')) {

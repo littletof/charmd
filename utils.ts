@@ -1,12 +1,5 @@
-/* import unified from 'unified';
-import parser from 'remark-parse';
-import stringify from 'remark-stringify';
-import marktable from 'marktable';
-import Table from 'cli-table';
-import Axios from 'axios';
-import highlight from 'prism-cli'; */
-
 import { colors, fromMarkdown } from './deps.ts';
+import { MdastOptions } from "./mod.ts";
 
 export type Node = {
     type: string;
@@ -42,11 +35,13 @@ function polyfillDocumentCreateForMDAST() {
 }
 
 /**
+ * **UNSTABLE**
+ * 
  * Returns an AST of the provided markdown.
  * It is a basic wrapper around https://github.com/syntax-tree/mdast-util-from-markdown,
  * `encoding` and `options` are passed straight to its `fromMarkdown` function
  */
-export function toAst(markdown: string, encodig?: any, options?: {extensions?: any[], mdastExtensions?: any[]}): Node {
+export function toAst(markdown: string, encodig?: any, options?: MdastOptions): Node {
     const prevDocument = polyfillDocumentCreateForMDAST();
     const value = fromMarkdown(markdown, encodig, options);
     

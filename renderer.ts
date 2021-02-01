@@ -4,39 +4,72 @@ import { generator } from './generator.ts';
 
 
 export interface Extension {
+    /** Called before AST generation, if a string is returned,
+     * it will override the input markdown for later extension's init fn and processing steps */
+    init?(md: string, options: Options) : string | void;
+
     /** Called with the generated AST's root node, before any transformations */
-    postAST?(astRoot: Node, options: Options | undefined): void;
+    postAST?(astRoot: Node, options: Options): void;
 
     /** Called with each node */
     transformNode?(
-        transformerFn: (node: Node, parent: Node, options: Options | undefined) => void,
-        node: Node, parent: Node | undefined, options: Options | undefined
+        /** The builtin recursive transform function, can be called, to transform the node's children */
+        transformerFn: (node: Node, parent: Node, options: Options) => void,
+        node: Node, parent: Node | undefined, options: Options
     ): boolean | void;
 
     /** Called after all the transformations ran for all nodes */
-    postTransform?(astRoot: Node, options: Options | undefined): void;
+    postTransform?(astRoot: Node, options: Options): void;
 
+    /** Called with each node. It should return the string representation of
+     * the rendered node,if the extension handles that specific node, or void,
+     * if its not handled by the extension. */
     generateNode?(
-        generatorFn: (node: Node, parent: Node, options: Options | undefined) => string | undefined,
-        node: Node, parent: Node | undefined, options: Options | undefined
+        /** The builtin recursive generator function, can be called, to render the node's children */
+        generatorFn: (node: Node, parent: Node, options: Options) => string | undefined,
+        node: Node, parent: Node | undefined, options: Options
     ): string | void;
 
-    postGenerate?(rendered: string, options: Options | undefined): string;
+    /** Called after the string representation is created. */
+    postGenerate?(rendered: string, options: Options): string;
 }
 
+export interface MdastOptions {
+    /** SyntaxExtension[] */
+    extensions?: any[];
+    /** MdastExtension[] */
+    mdastExtensions?: any[];
+}
+
+/** Options for the processing and rendering of the markdown */
 export interface Options {
     extensions?: Extension[];
     tableBorder?: boolean; // TODO or string to override borderChars
     listIcons?: string[];
+
+    /** **UNSTABLE**: The AST generator may change in the future.
+     * 
+     * Currently https://github.com/syntax-tree/mdast-util-from-markdown is used as the AST generator
+     */
+    mdast?: {
+        /** BufferEncoding */
+        encoding?: any; 
+        options?: MdastOptions
+    }
 }
 
-/**
- * Returns a string for the provided markdown, which printed in a terminal results in a formatted markdown text
- * 
- * Uses https://github.com/syntax-tree/mdast-util-from-markdown as its core under the hood.
+/** Returns a string for the provided markdown, which printed in a terminal results in a formatted markdown text
+ *
+ * @param {string} md The input markdown string
+ * @param {Options} [options={}] Options for the processing and rendering of the markdown
+ * @returns {string} The rendered output of the provided markdown text
  */
-export function renderMarkdown(md: string, options?: Options): string {
-    const mdast = toAst(md /* TODO pass as unstable */);
+export function renderMarkdown(md: string, options: Options = {}): string {
+    options?.extensions?.forEach(ext => {
+        md = ext.init?.(md, options) || md;
+    });
+
+    const mdast = toAst(md, options?.mdast?.encoding, options?.mdast?.options);
 
     options?.extensions?.forEach(ext => {
         ext.postAST?.(mdast, options);

@@ -1,10 +1,9 @@
-// Core of this file comes from https://github.com/dephraiim/termd/blob/1.4.0/src/generator.ts
-
 import {colors} from './deps.ts';
 import { Options } from "./renderer.ts";
 import { getHeaderFormatter, Node, transformTable } from './utils.ts';
 
-export function generator(node: Node, parent: Node, options: Options | undefined): string | undefined {
+/** The generator function is used to recuresively visit each node and generate the string representation of the node and its children */
+export function generator(node: Node, parent: Node, options: Options): string | undefined {
 
     if(options?.extensions) {
         for(const ext of options?.extensions) {
@@ -73,7 +72,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
             if(node.ordered) {
                 return generateList(i => colors.gray(`${node.start ? node.start + i : i+1}. `));
             } else {
-                const icons = options?.listIcons || ['-', '◦', '▪', '▸'];
+                const icons = options.listIcons || ['-', '◦', '▪', '▸'];
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
                 return generateList(i => colors.gray(`${icon} `));
             }
@@ -117,7 +116,7 @@ export function generator(node: Node, parent: Node, options: Options | undefined
 
         case 'table':
             const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
-            return transformTable(t, options?.tableBorder ?? true) + '\n';
+            return transformTable(t, options.tableBorder ?? true) + '\n';
 
         case 'thematicBreak':
             return node.value;
