@@ -47,7 +47,7 @@ An extension can implement any of the `Extension` interface's methods, which are
 - `generateNode`: Called with each node. It should return the string representation of the rendered node,if the extension handles that specific node, or void, if its not handled by the extension.
 - `postGenerate`: Called after the string representation is created.
 
-A simple extension, that renders `inlineCode` with bold green instead of the built-in gray italic would look something like this:
+A simple extension, that renders `link` with green and blue instead of the built-in cyan would look something like this:
 
 ```ts
 const LinkExt = {
