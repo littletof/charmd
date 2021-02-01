@@ -75,7 +75,7 @@ export function isMarkdownTable(text: string) {
     return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
 };
 
-export function transformTable(markdownTable: string, borders?: boolean) {
+export function generateTable(markdownTable: string, borders?: boolean) {
 
     let grid = markdownTable
                 .trim()

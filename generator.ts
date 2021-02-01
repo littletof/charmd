@@ -1,6 +1,6 @@
 import {colors} from './deps.ts';
 import { Options } from "./renderer.ts";
-import { getHeaderFormatter, Node, transformTable } from './utils.ts';
+import { getHeaderFormatter, Node, generateTable } from './utils.ts';
 
 /** The generator function is used to recuresively visit each node and generate the string representation of the node and its children */
 export function generator(node: Node, parent: Node, options: Options): string | undefined {
@@ -116,7 +116,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
 
         case 'table':
             const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
-            return transformTable(t, options.tableBorder ?? true) + '\n';
+            return generateTable(t, options.tableBorder ?? true) + '\n';
 
         case 'thematicBreak':
             return node.value;
