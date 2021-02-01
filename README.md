@@ -118,5 +118,7 @@ Feedback and contributions are always welcome. Open an issue or a PR, or contact
 - [x] remove dots from codeblock backgrounds
 - [x] links with images
 - [x] ```# Header with *italic*```
+- [ ] tests
+- [ ] fmt, lint
 - [ ] strikethrough, underline and combinations
 - [ ] Look into alternatives for the AST generation.
