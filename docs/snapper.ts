@@ -1,4 +1,4 @@
-import {snap} from 'https://deno.land/x/snapper@v0.0.3/mod.ts';
+import {snap} from 'https://deno.land/x/snapper@v0.0.5/mod.ts';
 import { renderMarkdown } from "../mod.ts";
 
 // Usage:
@@ -12,5 +12,5 @@ r = r.replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(
 
 
 await snap([
-    {content: r, imageSavePath: 'docs/showcase.png', viewport: {width: 675, height: 925}}
+    {content: r, imageSavePath: 'docs/showcase.png', viewport: {width: 675}}
 ]);

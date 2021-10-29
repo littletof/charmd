@@ -1,6 +1,7 @@
 # 🎩 charMD
 
 [![deno badge](https://img.shields.io/badge/deno.land/x-success?logo=deno&logoColor=black&labelColor=white&color=black)](https://deno.land/x/charmd)
+[![snapper_deno](https://img.shields.io/badge/-snapper%20%F0%9F%93%B7-%230DBC79)](https://github.com/littletof/snapper)
 
 *A simple, extendable markdown renderer for your terminal.*
 
