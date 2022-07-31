@@ -1,4 +1,4 @@
-// deno bundle --no-check .\mdast_shimmed_dep.ts mdast-util-from-markdown@0_8_4-shimmed.js
+// deno bundle --no-check .\mdast_shimmed_dep.ts mdast-util-from-markdown@1_2_0-shimmed.js
 
 // Shim document
 globalThis.document = {
@@ -12,6 +12,6 @@ globalThis.document = {
 document.createElement(); // needed
 // ---------
 
-import * as mdast_js from 'https://jspm.dev/mdast-util-from-markdown@0.8.4';
-
-export const mdast = mdast_js.default;
+export {fromMarkdown as mdast} from 'https://esm.sh/mdast-util-from-markdown@1.2.0';
+export * from "https://esm.sh/mdast-util-gfm-strikethrough@1.0.1";
+export { gfmStrikethrough } from 'https://esm.sh/micromark-extension-gfm-strikethrough@1.0.4';

@@ -1,4 +1,4 @@
-import {snap} from 'https://deno.land/x/snapper@v0.0.5/mod.ts';
+import {snap} from 'https://deno.land/x/snapper@v0.0.6/mod.ts';
 import { renderMarkdown } from "../mod.ts";
 
 // Usage:

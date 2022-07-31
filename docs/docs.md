@@ -6,7 +6,7 @@
 ###### h6 Heading
 ## `inline` *italic*
 
-**bold** __text__ *italic* _text_ ***bold and italic***
+**bold** __text__ *italic* _text_ ***bold and italic*** ~~striketrough~~
 
 > Some quote with **bold** and `block`
 > > and Another quote

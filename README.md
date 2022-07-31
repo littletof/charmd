@@ -98,12 +98,13 @@ The module itself requires no permissions to run.
 ## Limitations
 
 - No syntax highlight
-- No \~\~strikethrough\~\~ or underline
 - No multiline tables cells
-- Possible hiccups with more complex markdowns
+- Possible hiccups with more complex markdowns (Please open an issue about it)
 
 These could change in the future, but the aim is to keep the module's complexity minimal.
 > Also, many of these should also be solvable using extensions.
+>
+> [syntax highlight example](https://github.com/littletof/charmd/issues/2#issuecomment-832771746)
 
 ## Notes
 
@@ -123,7 +124,7 @@ Feedback and contributions are always welcome. Open an issue or a PR, or contact
 - [x] remove dots from codeblock backgrounds
 - [x] links with images
 - [x] ```# Header with *italic*```
+- [x] strikethrough, ~~-underline~~
 - [ ] tests
 - [ ] fmt, lint
-- [ ] strikethrough, underline and combinations
 - [ ] Look into alternatives for the AST generation.

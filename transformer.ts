@@ -40,10 +40,10 @@ function transformNode(node: Node, parent: Node, options: Options) {
 
         case 'list':
             node.listLevel = parent.type === 'listItem' ? parent.listLevel! + 1 : 0;
-            node.children?.forEach((ch: any) => ch.listLevel = node.listLevel);
+            node.children?.forEach(ch => ch.listLevel = node.listLevel);
             break;
 
-        case 'thematicBreak':
+        case 'thematicBreak': {
             let terminalWidth;
             try {
                 terminalWidth = (Deno as any/* so --unstable is not needed */).consoleSize(Deno.stdout.rid).columns;
@@ -54,6 +54,7 @@ function transformNode(node: Node, parent: Node, options: Options) {
 
             node.value = colors.reset('_'.repeat(width) + '\n');
             break;
+        }
         
         case 'paragraph':
             checkForTable(node, parent, options)
@@ -61,7 +62,7 @@ function transformNode(node: Node, parent: Node, options: Options) {
     }
 }
 
-function checkForTable(node: Node, parent: Node, options: Options) {
+function checkForTable(node: Node, _parent: Node, _options: Options) {
     if(node.type === "paragraph") {
         const table = node.children?.map(c => c.value).join("").trim();
         if(isMarkdownTable(table || '')) {

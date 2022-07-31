@@ -18,27 +18,37 @@ export function generator(node: Node, parent: Node, options: Options): string | 
         case 'root':
             return node.children?.map((child: Node) => generator(child, node, options)).join('\n');
 
-        case 'definition':
+        case 'definition': {
             const def = `${colors.cyan(`[${node.label}]`)}: [${node.title ?? ''}](${node.url})`;
             return colors.gray(colors.italic(`${def}\n`));
-        case 'image':
+        }
+        case 'image': {
             const imageLink = `![${node.alt}](${node.url})`;
             return colors.gray(colors.italic(`Image: ${imageLink}`));
-        case 'imageReference':
+        }
+        case 'imageReference': {
             const ref = `![${node.alt}]${colors.cyan(`[${node.label}]`)}`;
             return colors.gray(colors.italic(`Image reference: ${ref}`));
-        case 'link':
+        }
+        case 'link': {
             const linkText = node.children?.map(ch => generator(ch, node, options)).join('');
-            const link = `[${linkText}](${node.url})`
+            const link = `[${linkText}](${node.url})`;
             return colors.cyan(link);
-        case 'strong':
+        }
+        case 'strong': {
             const strongContent = node.children?.map((child: Node) => generator(child, node, options)).join('');
             return colors.bold(strongContent || '');
-        case 'emphasis':
+        }
+        case 'emphasis': {
             const emphasisContent =  node.children?.map((child: Node) => generator(child, node, options)).join('');
             return colors.italic(emphasisContent || '');
+        }
+        case 'delete': {
+            const strikeTroughContent =  node.children?.map((child: Node) => generator(child, node, options)).join('');
+            return colors.strikethrough(strikeTroughContent || '');
+        }
         case 'heading':
-            return getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth!) + ' ' + node.children?.map((ch: Node) => generator(ch, node, options)).join('')) + '\n'
+            return getHeaderFormatter(node.depth || 0)('#'.repeat(node.depth!) + ' ' + node.children?.map((ch: Node) => generator(ch, node, options)).join('')) + '\n';
 
         case 'linkReference':
             return (
@@ -59,13 +69,13 @@ export function generator(node: Node, parent: Node, options: Options): string | 
                     // then add horizontal line to the start of all generated chidren lines, except last \n
                     .map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
 
-        case 'list':
+        case 'list': {
             const generateList = (icon: (i: number) => string) => {
                 const tabForList = '  ';
                 return node.children?.map((child: Node, i: number) => {
                     const tabForMultiline = ' '.repeat(colors.stripColor(icon(i)).length || 2);
                     return (icon(i) + generator(child, node, options))
-                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? tabForMultiline +l: l)).join('\n') + '\n'; // indent full list
+                                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? tabForMultiline +l: l)).join('\n') + '\n'; // indent full list
                 }).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
             };
     
@@ -76,11 +86,12 @@ export function generator(node: Node, parent: Node, options: Options): string | 
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
                 return generateList(i => colors.gray(`${icon} `));
             }
+        }
 
         case 'listItem':
             return node.children?.map((ch: Node) => generator(ch, parent, options)).join(node.spread? '\n' : '');
 
-        case 'code':
+        case 'code': {
             let codeBlock = '';
             const xPadding = 2;
             const padString = (length: number) => colors.bgBrightBlack(colors.gray(' '.repeat(length)));
@@ -107,6 +118,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
             codeBlock += colors.bgBrightBlack(' ')+padString(max + 2*xPadding-1) + "\n";
 
             return codeBlock;
+        }
 
         case 'inlineCode':
             // return colors.inverse(colors.bgBrightWhite(colors.black(` ${node.value} `)));
@@ -114,9 +126,10 @@ export function generator(node: Node, parent: Node, options: Options): string | 
             // return colors.white(colors.inverse(colors.bgBlack(` ${node.value} `))); // best
             return colors.inverse(` ${node.value} `);
 
-        case 'table':
+        case 'table': {
             const t = node.children?.map((child: Node) => generator(child, node, options)).join('') || '';
             return generateTable(t, options.tableBorder ?? true) + '\n';
+        }
 
         case 'thematicBreak':
             return node.value;
