@@ -1,6 +1,6 @@
 import {renderMarkdown} from './mod.ts';
 
-const demoText = `
+export const demoText = `
 # deno charmd
 
 This is an example, to showcase https://github.com/littletof/charmd
@@ -179,12 +179,14 @@ Autoconverted link https://deno.land
 
 `;
 
-let md;
-if(Deno.args[0]) {
-    md = Deno.readTextFileSync(Deno.args[0]);
-} else {
-    md = demoText;
-}
+if(import.meta.main) {
+  let md;
+  if(Deno.args[0]) {
+      md = Deno.readTextFileSync(Deno.args[0]);
+  } else {
+      md = demoText;
+  }
 
-// renderMarkdown(md)
-console.log(renderMarkdown(md));
+  // renderMarkdown(md)
+  console.log(renderMarkdown(md));
+}

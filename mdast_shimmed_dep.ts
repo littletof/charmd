@@ -2,9 +2,10 @@
 
 // Shim document
 globalThis.document = {
-    createElement: (...data: any[]) => {
+    // deno-lint-ignore no-explicit-any
+    createElement: (..._data: any[]) => {
         return new class {
-            set innerHTML(data: string) {this.textContent = data};
+            set innerHTML(data: string) {this.textContent = data}
             textContent = '';
         }();
     }

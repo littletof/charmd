@@ -1,0 +1,13 @@
+[1mThis is bold text [7m ** [27m[22m
+
+[1mThis is bold text [7m __ [27m[22m
+
+[3mThis is italic text [7m * [27m[23m
+
+[3mThis is italic text [7m _ [27m[23m
+
+[9mThis is strikethrough[29m [7m ~~ [27m
+
+[1man [3mitalic[23m in bold[22m
+
+[9m[1man [3mitalic[23m in bold with [7m striketrough [27m[22m[29m

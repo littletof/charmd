@@ -1,0 +1,12 @@
+[90m- [39mCreate a list by starting a line with [7m + [27m, [7m - [27m, or [7m * [27m
+  [90m◦ [39mIndented list item:
+    [90m▪ [39mSubsublist item
+      [90m▸ [39mSubsublist item
+[90m- [39mMain list item
+
+[90m1. [39mLorem ipsum dolor sit amet
+[90m2. [39mConsectetur adipiscing elit
+[90m3. [39mInteger molestie lorem at massa
+
+[90m- [39m[x] Some
+[90m- [39m[ ] Other

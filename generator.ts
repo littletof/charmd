@@ -65,7 +65,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
         case 'blockquote':
             // gen childs
             return node.children?.map((child: Node) => generator(child, node, options)?.split('\n')
-                    .map((l: string) => colors.gray(colors.italic(l)))
+                    .map((l: string, i, a) => (i != a.length-1) ? colors.gray(colors.italic(l)) : l)
                     // then add horizontal line to the start of all generated chidren lines, except last \n
                     .map((l,i,a) => (i != a.length-1 && l.trim() ? '┃ ' : '') + l).join('\n')).join('');
 
@@ -84,7 +84,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
             } else {
                 const icons = options.listIcons || ['-', '◦', '▪', '▸'];
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
-                return generateList(i => colors.gray(`${icon} `));
+                return generateList(_i => colors.gray(`${icon} `));
             }
         }
 
@@ -142,4 +142,4 @@ export function generator(node: Node, parent: Node, options: Options): string | 
             // console.log({...node});
             return node.value;
     }
-};
+}
