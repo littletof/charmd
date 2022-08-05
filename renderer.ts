@@ -37,8 +37,10 @@ export interface Extension {
 
 export interface MdastOptions {
     /** SyntaxExtension[] */
+    // deno-lint-ignore no-explicit-any
     extensions?: any[];
     /** MdastExtension[] */
+    // deno-lint-ignore no-explicit-any
     mdastExtensions?: any[];
 }
 

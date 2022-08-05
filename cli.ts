@@ -12,10 +12,11 @@ if(!Deno.args) {
         case '-l':
             text = Deno.readTextFileSync(Deno.args[1]);
             break;
-        case '-r':
+        case '-r': {
             const resp = await fetch(Deno.args[1]);
             text = await resp.text();
             break;
+        }
         case '-s':
             text = Deno.args[1];
             break;

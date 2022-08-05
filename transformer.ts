@@ -5,7 +5,7 @@ import { isMarkdownTable, Node } from './utils.ts';
 /** The transfromer function is used to recuresively visit each node and make modifications to the `AST` for later steps */
 export function transformer(mdast: Node, options: Options) {
     recurse(mdast, null!, options);
-};
+}
 
 function recurse(node: Node, parent: Node, options: Options) {
     transformNode(node, parent, options);
@@ -46,13 +46,14 @@ function transformNode(node: Node, parent: Node, options: Options) {
         case 'thematicBreak': {
             let terminalWidth;
             try {
+                // deno-lint-ignore no-explicit-any
                 terminalWidth = (Deno as any/* so --unstable is not needed */).consoleSize(Deno.stdout.rid).columns;
             } catch {
                 terminalWidth = 160;
             }
             const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 80))
 
-            node.value = colors.reset('_'.repeat(width) + '\n');
+            node.value = colors.reset('_'.repeat(width)) + '\n';
             break;
         }
         

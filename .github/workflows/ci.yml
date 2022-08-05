@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    name: ${{ matrix.config.kind }} ${{ matrix.config.os }}
+    runs-on: ${{ matrix.config.os }}
+    timeout-minutes: 5
+    strategy:
+      matrix:
+        config:
+          - os: macOS-latest
+            kind: test
+          - os: windows-latest
+            kind: test
+          - os: ubuntu-latest
+            kind: test
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Install deno
+        uses: denolib/setup-deno@master
+        with:
+          deno-version: 1.24.0
+
+      - name: Running tests
+        if: matrix.config.kind == 'test'
+        run: deno task test

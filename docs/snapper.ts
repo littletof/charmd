@@ -5,7 +5,7 @@ import { renderMarkdown } from "../mod.ts";
 // 1. have deno Puppeteer installed
 // 2. deno run -A --unstable .\docs\snapper.ts
 
-let md = Deno.readTextFileSync('docs/docs.md');
+const md = Deno.readTextFileSync('docs/docs.md');
 let r = renderMarkdown(md);
 // remove empty lines after header, to save space on image
 r = r.replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/_{25}/, '');

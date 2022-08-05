@@ -3,7 +3,7 @@ import { MdastOptions } from "./mod.ts";
 
 export type Node = {
     type: string;
-    value: any;
+    value: string;
     children?: Node[];
     kind?: string;
     ordered?: boolean;
@@ -22,11 +22,14 @@ export type Node = {
 function polyfillDocumentCreateForMDAST() {
     // https://github.com/wooorm/parse-entities/blob/main/decode-entity.browser.js#L15
     // happens eg when text contains: [ &mdash; ]
+    // deno-lint-ignore no-explicit-any
     const prev = (globalThis as any).document;
+    // deno-lint-ignore no-explicit-any
     (globalThis as any).document = {
-        createElement: (...data: any[]) => {
+        // deno-lint-ignore no-explicit-any
+        createElement: (..._d: any[]) => {
             return new class {
-                set innerHTML(data: string) {this.textContent = data};
+                set innerHTML(data: string) {this.textContent = data}
                 textContent = '';
             }();
         }
@@ -41,26 +44,27 @@ function polyfillDocumentCreateForMDAST() {
  * It is a basic wrapper around https://github.com/syntax-tree/mdast-util-from-markdown,
  * `encoding` and `options` are passed straight to its `fromMarkdown` function
  */
-export function toAst(markdown: string, encodig?: any, options?: MdastOptions): Node {
+export function toAst(markdown: string, encodig?: string, options?: MdastOptions): Node {
     const prevDocument = polyfillDocumentCreateForMDAST();
     const value = fromMarkdown(markdown, encodig, options);
     
     // just to be safer
+    // deno-lint-ignore no-explicit-any
     (globalThis as any).document = prevDocument;
 
     return value;
-};
+}
 
+const headingFormats = [
+    (value: string) => value,
+    (value: string) => colors.bold(colors.underline(colors.red(value))),
+    (value: string) => colors.yellow(colors.bold(value)),
+    (value: string) => colors.green(colors.bold(value)),
+    (value: string) => colors.magenta(colors.bold(value)),
+    (value: string) => colors.cyan(colors.bold(value)),
+    (value: string) => colors.blue(colors.bold(value)),
+];
 export function getHeaderFormatter(head: number) {
-    const headingFormats = [
-        (value: string) => value,
-        (value: string) => colors.bold(colors.underline(colors.red(value))),
-        (value: string) => colors.yellow(colors.bold(value)),
-        (value: string) => colors.green(colors.bold(value)),
-        (value: string) => colors.magenta(colors.bold(value)),
-        (value: string) => colors.cyan(colors.bold(value)),
-        (value: string) => colors.blue(colors.bold(value)),
-    ];
 
     if(head > headingFormats.length-1) {
         head = 0;
@@ -73,7 +77,7 @@ export function isMarkdownTable(text: string) {
     // https://github.com/erikvullings/slimdown-js/blob/master/src/slimdown.ts#L125
     // Added \s* for the alignment row
     return /(\|[^\n]+\|\r?\n)((?:\|\s*:?[-]+:?\s*)+\|)(\n(?:\|[^\n]+\|\r?\n?)*)?/g.test(text);
-};
+}
 
 export function generateTable(markdownTable: string, borders?: boolean) {
 
