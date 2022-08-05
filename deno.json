@@ -4,5 +4,14 @@
         "bundle:mdast": "deno bundle --no-check ./mdast_shimmed_dep.ts mdast-util-from-markdown@1_2_0-shimmed.js",
         "docs:gen": "deno run -A --unstable ./docs/snapper.ts",
         "test": "deno test --allow-read=./test"
+    },
+    "fmt": {
+        "files": {
+            "exclude": [
+                "./mdast-util-from-markdown@1_2_0-shimmed.js",
+                "./test/testCases",
+                "./test/exampleOutput.out"
+            ]
+        }
     }
 }
