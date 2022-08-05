@@ -1,6 +1,7 @@
 import { Node, toAst } from './utils.ts';
 import { transformer } from './transformer.ts';
 import { generator } from './generator.ts';
+import { strike, strikethroughExt } from './deps.ts';
 
 
 export interface Extension {
@@ -52,8 +53,8 @@ export interface Options {
      * Currently https://github.com/syntax-tree/mdast-util-from-markdown is used as the AST generator
      */
     mdast?: {
-        /** BufferEncoding */
-        encoding?: any; 
+        /** BufferEncoding https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings*/
+        encoding?: string; 
         options?: MdastOptions
     }
 }
@@ -69,7 +70,14 @@ export function renderMarkdown(md: string, options: Options = {}): string {
         md = ext.init?.(md, options) || md;
     });
 
-    const mdast = toAst(md, options?.mdast?.encoding, options?.mdast?.options);
+    const mdastOptions = {
+        mdastExtensions: [strikethroughExt, ...(options?.mdast?.options?.mdastExtensions || [])],
+        extensions: [strike(), ...(options?.mdast?.options?.extensions || [])]
+    };
+
+    const mdastEncoding = options.mdast?.encoding || 'utf8';
+
+    const mdast = toAst(md, mdastEncoding, mdastOptions);
 
     options?.extensions?.forEach(ext => {
         ext.postAST?.(mdast, options);

@@ -1,14 +1,13 @@
-import { colors } from "./deps.ts";
 import {renderMarkdown} from './mod.ts';
 
 const demoText = `
-# deno terminal markdown
+# deno charmd
 
-This is an example, to showcase https://github.com/littletof/terminal_markdown
+This is an example, to showcase https://github.com/littletof/charmd
 
 If you want to test the module with your own markdown, provide its \`path\` as an argument and make sure \`--allow-read\` is also provided.
 \`\`\`bash
-deno run --allow-read https://raw.githubusercontent.com/littletof/terminal_markdown/master/mod.ts .\/README.md
+deno run --allow-read https://raw.githubusercontent.com/littletof/charmd/master/mod.ts .\/README.md
 \`\`\`
 
 ## Headers
@@ -40,7 +39,11 @@ __This is bold text \`\_\_\`__
 
 _This is italic text \`\_\`_
 
+~~This is strikethrough~~ \`\~\~\`
+
 **an *italic* in bold**
+
+~~**an *italic* in bold with \`striketrough\`**~~
 
 ## Blockquotes
 
