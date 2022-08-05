@@ -11,7 +11,9 @@ Deno.test({
     fn: () => {
         const output = renderMarkdown(demoText);
         const expectedOutput = Deno.readTextFileSync(new URL(import.meta.resolve("./exampleOutput.out")));
-        assertEquals<string>(output, expectedOutput);
+        if(!equal(output, expectedOutput)) {
+            assertEquals(output.split("\n"), expectedOutput.split("\n"));
+        }
     },
     permissions: {
         read:[new URL(import.meta.resolve("./exampleOutput.out"))]

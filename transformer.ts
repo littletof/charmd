@@ -53,7 +53,7 @@ function transformNode(node: Node, parent: Node, options: Options) {
             }
             const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 80))
 
-            node.value = colors.reset('_'.repeat(width) + '\n');
+            node.value = colors.reset('_'.repeat(width)) + '\n';
             break;
         }
         
