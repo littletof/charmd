@@ -9,8 +9,8 @@ const outExtension = ".out";
 Deno.test({
     name: "Example text",
     fn: () => {
-        const output = renderMarkdown(demoText);
-        const expectedOutput = Deno.readTextFileSync(new URL(import.meta.resolve("./exampleOutput.out")));
+        const output = renderMarkdown(demoText).replaceAll(/\r/g, "");
+        const expectedOutput = Deno.readTextFileSync(new URL(import.meta.resolve("./exampleOutput.out"))).replaceAll(/\r\n/g, "\n");
         if(!equal(output, expectedOutput)) {
             assertEquals(output.split("\n"), expectedOutput.split("\n"));
         }
