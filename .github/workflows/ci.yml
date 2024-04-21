@@ -28,7 +28,7 @@ jobs:
       - name: Install deno
         uses: denolib/setup-deno@master
         with:
-          deno-version: 1.24.0
+          deno-version: 1.42.4
 
       - name: Running tests
         if: matrix.config.kind == 'test'
