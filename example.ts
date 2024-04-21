@@ -1,4 +1,4 @@
-import {renderMarkdown} from './mod.ts';
+import { renderMarkdown } from "./mod.ts";
 
 export const demoText = `
 # deno charmd
@@ -179,12 +179,12 @@ Autoconverted link https://deno.land
 
 `;
 
-if(import.meta.main) {
+if (import.meta.main) {
   let md;
-  if(Deno.args[0]) {
-      md = Deno.readTextFileSync(Deno.args[0]);
+  if (Deno.args[0]) {
+    md = Deno.readTextFileSync(Deno.args[0]);
   } else {
-      md = demoText;
+    md = demoText;
   }
 
   // renderMarkdown(md)
