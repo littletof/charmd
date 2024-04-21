@@ -1,4 +1,4 @@
-export * as colors from "https://deno.land/std@0.105.0/fmt/colors.ts";
+export * as colors from "@std/fmt/colors";
 
 import { gfmStrikethrough, gfmStrikethroughFromMarkdown, mdast } from "./mdast-util-from-markdown@1_2_0-shimmed.js";
 export const strikethroughExt = gfmStrikethroughFromMarkdown;

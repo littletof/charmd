@@ -1,11 +1,10 @@
 # 🎩 charMD
 
 [![deno badge](https://img.shields.io/badge/deno.land/x-success?logo=deno&logoColor=black&labelColor=white&color=black)](https://deno.land/x/charmd)
+[![JSR](https://jsr.io/badges/@littletof/charmd)](https://jsr.io/@littletof/charmd)
 [![snapper_deno](https://img.shields.io/badge/-snapper%20%F0%9F%93%B7-%230DBC79)](https://github.com/littletof/snapper)
 
 *A simple, extendable markdown renderer for your terminal.*
-
-> 🚧 This module is in early developement, expect breaking changes 🚧
 
 **`charMD`** enables you to render a markdown text into a string, which printed in the terminal provides a well formatted output, instead of plain text.
 
@@ -34,6 +33,13 @@ import { renderMarkdown } from 'https://deno.land/x/charmd/mod.ts';
 
 console.log(renderMarkdown('# Hello world 🌍!'));
 ```
+
+Alternatevily you can import from [JSR](https://jsr.io/)
+
+```ts
+import { renderMarkdown } from 'jsr:@littletof/charmd';
+```
+
 
 ### 🧩 Extensions
 
@@ -86,14 +92,6 @@ It has three options:
 ## Permissions
 
 The module itself requires no permissions to run.
-
-> If `--unstable` is provided, horizontal separators will consider the terminal's width.
-
-<!--
-|Flag| Required |Reason|
-|:--|:-:|:--|
-| 🚧 `--unstable`  |  | If provided, the horizontal separator will consider the terminals width |
--->
 
 ## Limitations
 

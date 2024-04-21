@@ -1,9 +1,39 @@
 {
+  "name": "@littletof/charmd",
+  "version": "0.1.0",
   "tasks": {
     "example": "deno run example.ts",
     "bundle:mdast": "deno bundle --no-check ./mdast_shimmed_dep.ts mdast-util-from-markdown@1_2_0-shimmed.js",
     "docs:gen": "deno run -A ./docs/snapper.ts",
-    "test": "deno test --allow-read=./test"
+    "test": "deno test --coverage=./cov --allow-read=./test",
+    "coverage": "deno task test && deno coverage --html ./cov"
+  },
+  "imports": {
+    "@std/fmt": "jsr:@std/fmt@0.223.0",
+    "@std/testing": "jsr:@std/testing@0.223.0"
+  },
+  "exports": {
+    ".": "./mod.ts",
+    "./example": "./example.ts",
+    "./cli": "./cli.ts",
+    "./nodeTypes": "./nodeTypes.ts"
+  },
+  "publish": {
+    "include": [
+      "./deno.json",
+      "./mod.ts",
+      "./deps.ts",
+      "./generator.ts",
+      "./renderer.ts",
+      "./transformer.ts",
+      "./utils.ts",
+      "./nodeTypes.ts",
+      "./mdast-util-from-markdown@1_2_0-shimmed.js",
+      "./cli.ts",
+      "./example.ts",
+      "./README.md",
+      "./docs/showcase.png"
+    ]
   },
   "fmt": {
     "lineWidth": 120,
