@@ -123,9 +123,9 @@ Feedback and contributions are always welcome. Open an issue or a PR, or contact
 - [x] fix lists
 - [x] remove dots from codeblock backgrounds
 - [x] links with images
-- [x] ```# Header with *italic*```
+- [x] `# Header with *italic*`
 - [x] strikethrough, ~~underline~~
 - [x] basic tests
 - [x] lint
-- [ ] fmt
+- [x] fmt
 - [ ] Look into alternatives for the AST generation.

@@ -3,7 +3,7 @@
 // This code was bundled using `deno bundle` and it's not recommended to edit it manually
 
 function l(r, t) {
-    var { includeImageAlt: i = !0  } = t || {};
+    var { includeImageAlt: i = !0 } = t || {};
     return a(r, i);
 }
 function a(r, t) {
@@ -76,7 +76,7 @@ function p1(n, t, i, u) {
         return s(r) ? (n.enter(i), e(r)) : t(r);
     }
     function e(r) {
-        return s(r) && (I++) < o ? (n.consume(r), e) : (n.exit(i), t(r));
+        return s(r) && I++ < o ? (n.consume(r), e) : (n.exit(i), t(r));
     }
 }
 function a3(n) {
@@ -2230,7 +2230,7 @@ function I(l) {
         if (p = l[e], e && p[1].type === "chunkFlow" && l[e - 1][1].type === "listItemPrefix" && (s = p[1]._tokenizer.events, n = 0, n < s.length && s[n][1].type === "lineEndingBlank" && (n += 2), n < s.length && s[n][1].type === "content")) for(; ++n < s.length && s[n][1].type !== "content";)s[n][1].type === "chunkText" && (s[n][1]._isInFirstContentOfListItem = !0, n++);
         if (p[0] === "enter") p[1].contentType && (Object.assign(c, _(l, e)), e = c[e], u = !0);
         else if (p[1]._container) {
-            for(n = e, r = void 0; (n--) && (o = l[n], o[1].type === "lineEnding" || o[1].type === "lineEndingBlank");)o[0] === "enter" && (r && (l[r][1].type = "lineEndingBlank"), o[1].type = "lineEnding", r = n);
+            for(n = e, r = void 0; n-- && (o = l[n], o[1].type === "lineEnding" || o[1].type === "lineEndingBlank");)o[0] === "enter" && (r && (l[r][1].type = "lineEndingBlank"), o[1].type = "lineEnding", r = n);
             r && (p[1].end = Object.assign({}, l[r][1].start), f = l.slice(r, e), f.unshift(p), u1(l, r, e - r + 1, f));
         }
     }
@@ -2621,7 +2621,7 @@ function dn(n, u, r1) {
     }
     function s(S) {
         let g;
-        return S === 59 && l ? (g = n.exit("characterReferenceValue"), a === C && !n1(t.sliceSerialize(g)) ? r1(S) : (n.enter("characterReferenceMarker"), n.consume(S), n.exit("characterReferenceMarker"), n.exit("characterReference"), u)) : a(S) && (l++) < o ? (n.consume(S), s) : r1(S);
+        return S === 59 && l ? (g = n.exit("characterReferenceValue"), a === C && !n1(t.sliceSerialize(g)) ? r1(S) : (n.enter("characterReferenceMarker"), n.consume(S), n.exit("characterReferenceMarker"), n.exit("characterReference"), u)) : a(S) && l++ < o ? (n.consume(S), s) : r1(S);
     }
 }
 var tt = {
@@ -2930,7 +2930,7 @@ var Vt = {
 };
 function _t(n) {
     let u = n.length;
-    for(; (u--) && !(n[u][0] === "enter" && n[u][1].type === "htmlFlow"););
+    for(; u-- && !(n[u][0] === "enter" && n[u][1].type === "htmlFlow"););
     return u > 1 && n[u - 2][1].type === "linePrefix" && (n[u][1].start = n[u - 2][1].start, n[u + 1][1].start = n[u - 2][1].start, n.splice(u - 2, 2)), n;
 }
 function Qt(n, u, r) {
@@ -3583,7 +3583,7 @@ function Sn(t) {
     }
     function _(s) {
         let h = r.length;
-        for(; (h--) > s;){
+        for(; h-- > s;){
             let g = r[h];
             e.containerState = g[1], g[0].exit.call(e, t);
         }
@@ -3679,7 +3679,7 @@ function Fn(t, e) {
             }
         }
         if (a) {
-            let d1 = {
+            let d = {
                 type: r === t.length || p || a < 2 ? "lineSuffix" : "hardBreakTrailing",
                 start: {
                     line: n.end.line,
@@ -3690,13 +3690,13 @@ function Fn(t, e) {
                 },
                 end: Object.assign({}, n.end)
             };
-            n.end = Object.assign({}, d1.start), n.start.offset === n.end.offset ? Object.assign(n, d1) : (t.splice(r, 0, [
+            n.end = Object.assign({}, d.start), n.start.offset === n.end.offset ? Object.assign(n, d) : (t.splice(r, 0, [
                 "enter",
-                d1,
+                d,
                 e
             ], [
                 "exit",
-                d1,
+                d,
                 e
             ]), r += 2);
         }
@@ -4008,7 +4008,7 @@ function x1() {
                     }
                 case 9:
                     {
-                        for(o = Math.ceil(i / 4) * 4, e.push(-2); (i++) < o;)e.push(-1);
+                        for(o = Math.ceil(i / 4) * 4, e.push(-2); i++ < o;)e.push(-1);
                         break;
                     }
                 case 10:
@@ -4187,14 +4187,14 @@ function Me(h = {}) {
             r = C(e, u, r);
         }
         for(r = -1; ++r < e.length;){
-            let u1 = s[e[r][0]];
-            B1.call(u1, e[r][1].type) && u1[e[r][1].type].call(Object.assign({
+            let u = s[e[r][0]];
+            B1.call(u, e[r][1].type) && u[e[r][1].type].call(Object.assign({
                 sliceSerialize: e[r][2].sliceSerialize
             }, w), e[r][1]);
         }
         if (i.length > 0) {
-            let u2 = i[i.length - 1];
-            (u2[1] || q).call(w, void 0, u2[0]);
+            let u = i[i.length - 1];
+            (u[1] || q).call(w, void 0, u[0]);
         }
         for(t.position = {
             start: S(e.length > 0 ? e[0][1].start : {
@@ -4668,18 +4668,6 @@ function k1() {
     return "~";
 }
 export { m1 as gfmStrikethroughFromMarkdown, p2 as gfmStrikethroughToMarkdown };
-({
-    enter: {
-        strikethrough () {
-            this.tag("<del>");
-        }
-    },
-    exit: {
-        strikethrough () {
-            this.tag("</del>");
-        }
-    }
-});
 function x2(m = {}) {
     let l = m.singleTilde, p = {
         tokenize: S,
@@ -4780,15 +4768,15 @@ function x2(m = {}) {
     }
 }
 globalThis.document = {
-    createElement: (...data)=>{
+    createElement: (..._data)=>{
         return new class {
             set innerHTML(data) {
                 this.textContent = data;
             }
-            textContent = '';
+            textContent = "";
         }();
     }
 };
 document.createElement();
-export { x2 as gfmStrikethrough };
 export { Pe as mdast };
+export { x2 as gfmStrikethrough };

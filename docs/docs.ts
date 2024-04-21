@@ -1,7 +1,9 @@
-import {renderMarkdown} from '../mod.ts';
+import { renderMarkdown } from "../mod.ts";
 
-let md = Deno.readTextFileSync('docs/docs.md');
+const md = Deno.readTextFileSync("docs/docs.md");
 let r = renderMarkdown(md);
-// remove empty lines after header, to save space on image
-r = r.replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n").replace(/\n\n/, "\n");
+// remove empty lines after headers to save space on image
+for (let i = 0; i < 6; i++) {
+  r = r.replace(/\n\n/, "\n");
+}
 console.log(r);
