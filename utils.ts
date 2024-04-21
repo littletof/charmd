@@ -1,5 +1,5 @@
 import { colors, fromMarkdown } from "./deps.ts";
-import { MdastOptions } from "./mod.ts";
+import type { MdastOptions } from "./mod.ts";
 import type { Node } from "./nodeTypes.ts";
 
 function polyfillDocumentCreateForMDAST() {

@@ -1,5 +1,5 @@
 import { colors } from "./deps.ts";
-import { Options } from "./renderer.ts";
+import type { Options } from "./renderer.ts";
 import type { Node } from "./nodeTypes.ts";
 import { generateTable, getHeaderFormatter } from "./utils.ts";
 

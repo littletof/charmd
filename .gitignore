@@ -1,5 +1,5 @@
 .vscode
-eggs-debug.log
+cov
 
 TODO.md
 test/tableTest.md

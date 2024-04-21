@@ -1,5 +1,5 @@
 import { colors } from "./deps.ts";
-import { Options } from "./renderer.ts";
+import type { Options } from "./renderer.ts";
 import type { Node, TableNode, TextNode } from "./nodeTypes.ts";
 import { isMarkdownTable } from "./utils.ts";
 

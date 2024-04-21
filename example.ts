@@ -1,6 +1,6 @@
 import { renderMarkdown } from "./mod.ts";
 
-export const demoText = `
+export const demoText: string = `
 # deno charmd
 
 This is an example, to showcase https://github.com/littletof/charmd
