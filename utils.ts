@@ -1,36 +1,9 @@
 import { colors, fromMarkdown } from "./deps.ts";
 import { MdastOptions } from "./mod.ts";
-
-export interface Node {
-  type: string;
-  value: string;
-  position: {
-    start: NodePosition;
-    end: NodePosition;
-  };
-  children?: Node[];
-  kind?: string;
-  ordered?: boolean;
-  tabed?: boolean;
-  depth?: number;
-  url?: string;
-  alt?: string;
-  lang?: string;
-  label?: string;
-  title?: string;
-  listLevel?: number;
-  start?: number; // ordered list
-  spread?: boolean; // list
-};
-
-export interface NodePosition {
-  line: number;
-  column: number;
-  offset: number;
-}
+import type { Node } from "./nodeTypes.ts";
 
 function polyfillDocumentCreateForMDAST() {
-  // https://github.com/wooorm/parse-entities/blob/main/decode-entity.browser.js#L15
+  // https://github.com/wooorm/parse-entities/blob/2.0.0/decode-entity.browser.js#L15
   // happens eg when text contains: [ &mdash; ]
   // deno-lint-ignore no-explicit-any
   const prev = (globalThis as any).document;

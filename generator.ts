@@ -1,6 +1,7 @@
 import { colors } from "./deps.ts";
 import { Options } from "./renderer.ts";
-import { generateTable, getHeaderFormatter, Node } from "./utils.ts";
+import type { Node } from "./nodeTypes.ts";
+import { generateTable, getHeaderFormatter } from "./utils.ts";
 
 /** The generator function is used to recuresively visit each node and generate the string representation of the node and its children */
 export function generator(node: Node, parent: Node, options: Options): string | undefined {
@@ -75,7 +76,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
     case "list": {
       const generateList = (icon: (i: number) => string) => {
         const tabForList = "  ";
-        return node.children?.map((child: Node, i: number) => {
+        return node.children?.map((child, i: number) => {
           const tabForMultiline = " ".repeat(colors.stripColor(icon(i)).length || 2);
           return (icon(i) + generator(child, node, options))
             ?.replace(/\n$/, "").split("\n").map((l, i) => tabForList + (i ? tabForMultiline + l : l)).join("\n") +
@@ -88,7 +89,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
       } else {
         const icons = options.listIcons || ["-", "◦", "▪", "▸"];
         // Get icon or the last available one.
-        const icon = icons[Math.min(node.listLevel!, icons.length - 1)];
+        const icon = icons[Math.min(node.listLevel, icons.length - 1)];
         return generateList((_i) => colors.gray(`${icon} `));
       }
     }
@@ -147,6 +148,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
 
     default:
       // console.log({...node});
-      return node.value;
+      // deno-lint-ignore no-explicit-any
+      return (node as any).value;
   }
 }
