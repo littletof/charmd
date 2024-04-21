@@ -44,7 +44,13 @@ function transformNode(node: Node, parent: Node, options: Options) {
             break;
 
         case 'thematicBreak': {
-            const terminalWidth = options.lineWidth || Deno.consoleSize?.()?.columns || 160;
+            let terminalWidth;
+            // try needed because Deno.consoleSize() fails when used in test https://github.com/denoland/deno/issues/17982, https://github.com/denoland/deno/issues/14543
+            try {
+                terminalWidth = options.lineWidth || Deno.consoleSize().columns;
+            } catch {
+                terminalWidth = 160;
+            }
             const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 80))
 
             node.value = colors.reset('_'.repeat(width)) + '\n';

@@ -75,8 +75,8 @@ export function generator(node: Node, parent: Node, options: Options): string | 
                 return node.children?.map((child: Node, i: number) => {
                     const tabForMultiline = ' '.repeat(colors.stripColor(icon(i)).length || 2);
                     return (icon(i) + generator(child, node, options))
-                                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? tabForMultiline +l: l)).join('\n') + '\n'; // indent full list
-                }).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 ha 0 indent
+                                    ?.replace(/\n$/, '').split('\n').map((l,i) => tabForList + (i ? tabForMultiline +l: l)).join('\n') + '\n'; // indent section of list
+                }).join('').split('\n').map((l: string) => l.replace(tabForList, '')).join('\n'); // remove outermost indent from each line -> level 0 has 0 indent
             };
     
             if(node.ordered) {
