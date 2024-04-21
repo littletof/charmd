@@ -133,11 +133,11 @@ export function generateTable(markdownTable: string, borders?: boolean) {
         const bottom = tableChars.bottomLeft + cellWidths.map(cw => tableChars.middleMiddle.repeat(cw + cellPadding*2)).join(tableChars.bottomMiddle) + tableChars.bottomRight;
 
         grid.splice(1, 1); // remove alignment row
-        return (
-            top + '\n'
-            + grid.map(row => tableChars.left + row.join(tableChars.middle) + tableChars.right).join('\n'+middle+'\n') + '\n'
-            + bottom
-        );
+        return [
+          top,
+          grid.map((row) => tableChars.left + row.join(tableChars.middle) + tableChars.right).join("\n" + middle + "\n"),
+          bottom
+        ].join("\n");
     } else {
         return grid.map(row => "|" + row.join("|") + "|").join('\n');
     }
@@ -170,4 +170,4 @@ const tableChars = {
     left: "│",
     right: "│",
     middle: "│",
-};
+} as const;
