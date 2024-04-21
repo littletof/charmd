@@ -83,6 +83,7 @@ export function generator(node: Node, parent: Node, options: Options): string | 
                 return generateList(i => colors.gray(`${node.start ? node.start + i : i+1}. `));
             } else {
                 const icons = options.listIcons || ['-', '◦', '▪', '▸'];
+                // Get icon or the last available one.
                 const icon = icons[Math.min(node.listLevel!, icons.length-1)];
                 return generateList(_i => colors.gray(`${icon} `));
             }

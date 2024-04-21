@@ -47,8 +47,12 @@ export interface MdastOptions {
 /** Options for the processing and rendering of the markdown */
 export interface Options {
     extensions?: Extension[];
+    /** Whether to add borders to the generated tables. Defaults to `true`. */
     tableBorder?: boolean; // TODO or string to override borderChars
+    /** Override list icons for the different list levels. For lists deeper than whats provided, the last icon will be used. Defaults to `['-', '◦', '▪', '▸']` */
     listIcons?: string[];
+    /** Only affects thematicBreak line width currently. Defaults to `Deno.consoleSize().columns`*/
+    lineWidth?: number;
 
     /** **UNSTABLE**: The AST generator may change in the future.
      * 

@@ -44,13 +44,7 @@ function transformNode(node: Node, parent: Node, options: Options) {
             break;
 
         case 'thematicBreak': {
-            let terminalWidth;
-            try {
-                // deno-lint-ignore no-explicit-any
-                terminalWidth = (Deno as any/* so --unstable is not needed */).consoleSize(Deno.stdout.rid).columns;
-            } catch {
-                terminalWidth = 160;
-            }
+            const terminalWidth = options.lineWidth || Deno.consoleSize?.()?.columns || 160;
             const width = Math.min(terminalWidth, Math.max(terminalWidth/2, 80))
 
             node.value = colors.reset('_'.repeat(width)) + '\n';
