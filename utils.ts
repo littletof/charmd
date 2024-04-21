@@ -1,9 +1,13 @@
 import { colors, fromMarkdown } from "./deps.ts";
 import { MdastOptions } from "./mod.ts";
 
-export type Node = {
+export interface Node {
   type: string;
   value: string;
+  position: {
+    start: NodePosition;
+    end: NodePosition;
+  };
   children?: Node[];
   kind?: string;
   ordered?: boolean;
@@ -18,6 +22,12 @@ export type Node = {
   start?: number; // ordered list
   spread?: boolean; // list
 };
+
+export interface NodePosition {
+  line: number;
+  column: number;
+  offset: number;
+}
 
 function polyfillDocumentCreateForMDAST() {
   // https://github.com/wooorm/parse-entities/blob/main/decode-entity.browser.js#L15
