@@ -1,6 +1,6 @@
 {
   "name": "@littletof/charmd",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "tasks": {
     "example": "deno run example.ts",
     "bundle:mdast": "deno bundle --no-check ./mdast_shimmed_dep.ts mdast-util-from-markdown@1_2_0-shimmed.js",
