@@ -33,3 +33,17 @@ jobs:
       - name: Running tests
         if: matrix.config.kind == 'test'
         run: deno task test
+  distro:
+    name: Check distros
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Install deno
+        uses: denolib/setup-deno@master
+        with:
+          deno-version: 1.42.4
+
+      - name: Runs without importmap
+        run: deno test --allow-read=. --allow-net --no-config ./test/ci-distributions.ts
