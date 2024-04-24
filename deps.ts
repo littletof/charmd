@@ -1,4 +1,4 @@
-export * as colors from "@std/fmt/colors";
+export * as colors from "jsr:@std/fmt@0.223.0/colors";
 
 import { gfmStrikethrough, gfmStrikethroughFromMarkdown, mdast } from "./mdast-util-from-markdown@1_2_0-shimmed.js";
 export const strikethroughExt = gfmStrikethroughFromMarkdown;

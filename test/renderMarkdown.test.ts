@@ -1,4 +1,4 @@
-import { assertEquals, equal } from "@std/testing/asserts";
+import { assertEquals, equal } from "jsr:@std/testing@0.223.0/asserts";
 import { demoText } from "../example.ts";
 import { renderMarkdown } from "../mod.ts";
 

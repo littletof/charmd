@@ -8,10 +8,6 @@
     "test": "deno test --coverage=./cov --allow-read=./test",
     "coverage": "deno task test && deno coverage --html ./cov"
   },
-  "imports": {
-    "@std/fmt": "jsr:@std/fmt@0.223.0",
-    "@std/testing": "jsr:@std/testing@0.223.0"
-  },
   "exports": {
     ".": "./mod.ts",
     "./example": "./example.ts",
