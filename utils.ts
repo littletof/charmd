@@ -74,9 +74,10 @@ export function generateTable(markdownTable: string, borders?: boolean) {
           .trim()
           // remove first and last "|" borders of the table
           .replaceAll(/^\||\|$/g, "")
-          .split("|")
+          .split(/(?<!\\)\|/g) // split on | but not on \| // https://www.regular-expressions.info/lookaround.html
       );
-    });
+    })
+    .map(line => line.map(cell => cell.replaceAll('\\|', '|'))); // replace escaped | ("\|") in each cell with simple "|" as we are after table splitting.
 
   const maxCol = Math.max(...grid.map((row) => row.length));
   const cellWidths = [];
